@@ -1,2 +1,7 @@
+#Eclipse
 **/lib
 /build/
+#IDEA 
+.idea
+*.iml
+
