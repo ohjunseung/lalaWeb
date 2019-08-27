@@ -4,6 +4,15 @@ import java.io.Serializable;
 
 public class Job implements Serializable {
     private String name,code;
+    private double salary;
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
 
     public String getName() {
         return name;

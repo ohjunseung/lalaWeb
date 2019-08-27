@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Employee implements Serializable {
     private String fname,lname,email,phone,jobCode;
-    private int id,salary;
+    private int id;
 
     public String getFname() {
         return fname;
@@ -48,17 +48,5 @@ public class Employee implements Serializable {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
     }
 }
