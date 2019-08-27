@@ -1,5 +1,6 @@
 package lalaWeb;
+import javax.servlet.http.HttpServlet;
 
-public class test {
+public class Controller extends HttpServlet{
 
 }
