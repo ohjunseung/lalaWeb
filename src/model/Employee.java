@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 
 public class Employee implements Serializable {
-    private String fname,lname,email,phone,jobCode;
+    private String fname, lname, email, phone, jobCode;
     private int id;
 
     public String getFname() {
