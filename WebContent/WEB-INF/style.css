@@ -1,0 +1,83 @@
+@import "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
+body{
+	margin: 0px;
+	font-family: sans-serif;
+}
+.login-box{
+	width: 50%;
+	max-width: 400px;
+	position: absolute;
+	top: 50%; left: 50%;
+	transform: translate(-50%,-50%);
+	color: white;
+	background-color: rgba(105,105,105,0.7);
+	border-radius: 40px;
+}
+.login-box h1{
+	font-size: 40px;
+	border-bottom: 2px solid #4caf50;
+	border-bottom-right-radius: 40px;
+	margin-left: 20px;
+	padding: 10px 0px;
+	text-shadow: 2px 2px black;
+}
+
+.textbox{
+	width: 90%;
+	overflow: hidden;
+	font-size: 20px;
+	padding: 8px 0px;
+	margin: 8px 20px;
+	border-bottom: 2px solid #4caf50;
+	border-radius: 40px;
+	background: #2f3640;
+}
+.textbox i{
+	width: 26px;
+	float: left;
+	text-align: center;
+	margin-left: 5px;
+}
+.textbox input {
+	border: none;
+	outline: none;
+	background:none;
+	color: white;
+	font-size: 16px;
+	width: 100px;
+	float: left;
+	margin: 0px 10px;
+}
+.box{
+	width: 90%;
+	font-size: 16px;
+	margin: 0px 20px;
+	border-bottom: 2px solid #4caf50;
+	border-radius: 40px;
+	background: #2f3640;
+}
+.btnleft {
+	width: 30%;
+	background: #2f3640;
+	border: 2px solid #4caf50;
+	color: white;
+	padding: 5px ;
+	cursor: pointer;
+	margin: 10px 20px;
+	float: left;
+}
+.btnright {
+	width: 30%;
+	background: #2f3640;
+	border: 2px solid #4caf50;
+	color: white;
+	padding: 5px ;
+	cursor: pointer;
+	margin: 10px 20px;
+	float: right;
+}
+select {
+	font-size: 16px;
+	margin: 10px 20px;
+	margin-top: 0px;
+}

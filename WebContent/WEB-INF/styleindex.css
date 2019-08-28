@@ -1,0 +1,22 @@
+.box{
+	width: 50%;
+	max-width: 400px;
+	position: absolute;
+	top: 50%; left: 50%;
+	transform: translate(-50%,-50%);
+	border-radius: 10px;
+	padding: 10px;
+}
+.pic{
+	border-radius: 50%;
+}
+.info{
+	font-size: 20px;
+	padding: 8px;
+	margin: 8px 20px;
+	border-bottom: 2px solid black;
+	border-radius: 40px;
+}
+.edit{
+	margin: 8px 200px;
+}
