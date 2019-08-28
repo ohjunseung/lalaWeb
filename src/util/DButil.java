@@ -1,17 +1,20 @@
 package util;
 
+import model.User;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DButil {
     private static BasicDataSource ds;
 
-    private static BasicDataSource getInstance(){
-        if (ds == null){
+    private static BasicDataSource getInstance() {
+        if (ds == null) {
             ds = new BasicDataSource();
             ds.setUrl("jdbc:mysql://localhost:3306/eis");
             ds.setUsername("root");
@@ -24,7 +27,36 @@ public class DButil {
         return ds;
     }
 
-    private static void checkUser(){
+    private static boolean checkUser(User user) {
+        boolean tmp = false;
+        try {
+            Connection conn = ds.getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT email FROM user WHERE email = ? AND pass = ?");
+            ps.setString(1, user.getEmail());
+            ps.setString(2, hashSHA256(user.getPass()));
+            ResultSet rs = ps.executeQuery();
+            tmp = rs.next();
+        } catch (SQLException e) {
+            for (Throwable t : e
+            ) {
+                t.printStackTrace();
+            }
+        }
+        return tmp;
+    }
+
+    public static ResultSet getInformation() {
+        try {
+            Connection conn = ds.getConnection();
+        } catch (SQLException e) {
+            for (Throwable t : e
+            ) {
+                t.printStackTrace();
+            }
+        }
+    }
+
+    public static ResultSet getData() {
         try {
             Connection conn = ds.getConnection();
         } catch (SQLException e) {
