@@ -6,4 +6,12 @@
     <welcome-file-list>
         <welcome-file>/WEB-INF/index.html</welcome-file>
     </welcome-file-list>
+    <servlet>
+        <servlet-name>about</servlet-name>
+        <jsp-file>/WEB-INF/aboutus.html</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>about</servlet-name>
+        <url-pattern>/aboutus</url-pattern>
+    </servlet-mapping>
 </web-app>
