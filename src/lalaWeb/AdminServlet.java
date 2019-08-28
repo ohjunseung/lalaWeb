@@ -1,6 +1,9 @@
 package lalaWeb;
+
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 
-public class AdminServlet extends HttpServlet{
+@WebServlet("/manager")
+public class AdminServlet extends HttpServlet {
 
 }

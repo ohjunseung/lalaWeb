@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private String email,pass;
+    private String email, pass;
 
     public String getEmail() {
         return email;
