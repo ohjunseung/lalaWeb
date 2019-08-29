@@ -1,19 +1,21 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 	<meta charset="utf-8">
 	<title>Index</title>
-	<link rel="stylesheet" href="styleindex.css">
+	<link rel="stylesheet" href="/CSS/styleindex.css">
 </head>
 <body>
 	<div class="navbar">
 		<h2 id="Name">Company Name</h2>
 		<div class="menu">
-			<a href="index.html">Home</a>
-			<a href="desc.html">Description</a>
-			<a href="aboutus.html">About</a>
+			<a href="index.jsp">Home</a>
+			<a href="desc.jsp">Description</a>
+			<a href="aboutus.jsp">About</a>
 		</div>
 	</div>
-	<div class="content">	
 		<table class="box" style="width: 50%", border="1px">
 		<tr>
 			<td rowspan="2" class="pic">A</td>
@@ -41,7 +43,5 @@
 			<td class="edit">Edit</td>
 		</tr>
 		</table>
-	</div>
-
 </body>
 </html>
