@@ -1,5 +1,6 @@
 package util;
 
+import model.Employee;
 import model.User;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 
@@ -27,11 +28,26 @@ public class DButil {
         return ds;
     }
 
-    private static boolean checkUser(User user) {
+    public static boolean checkAdmin(User user) {
         boolean tmp = false;
-        try {
-            Connection conn = ds.getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT email FROM user WHERE email = ? AND pass = ?");
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT user.Email FROM user LEFT JOIN employee ON user.Email = employee.Email WHERE employee.ID IS NULL")) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+                tmp = user.getEmail().equals(rs.getString(1));
+        } catch (SQLException e) {
+            for (Throwable t : e
+            ) {
+                t.printStackTrace();
+            }
+        }
+        return tmp;
+    }
+
+    public static boolean checkUser(User user) {
+        boolean tmp = false;
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT Email FROM user WHERE Email = ? AND Pass = ?")) {
             ps.setString(1, user.getEmail());
             ps.setString(2, hashSHA256(user.getPass()));
             ResultSet rs = ps.executeQuery();
@@ -45,9 +61,57 @@ public class DButil {
         return tmp;
     }
 
-    public static ResultSet getInformation() {
-        try {
-            Connection conn = ds.getConnection();
+    public static boolean register(User user) {
+        boolean tmp = false;
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO user(Email,Pass) VALUES(?,?)")) {
+            ps.setString(1, user.getEmail());
+            ps.setString(2, hashSHA256(user.getPass()));
+            ps.executeUpdate();
+            tmp = true;
+        } catch (SQLException e) {
+            String state = e.getSQLState();
+            if (state.equals("21S01")) // Null inserted
+                tmp = false;
+            else if (state.equals("23000")) // Duplicate Value
+                tmp = false;
+            else for (Throwable t : e
+                ) {
+                    t.printStackTrace();
+                }
+        }
+        return tmp;
+    }
+
+    public static boolean insertEmployee(Employee employee) {
+        boolean tmp = false;
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO " +
+                     "employee(Job_code,Firstname,Lastname,Email,Phone) VALUES(?,?,?,?,?)")) {
+            ps.setString(1, employee.getJobCode());
+            ps.setString(2, employee.getFname());
+            ps.setString(3, employee.getLname());
+            ps.setString(4, employee.getEmail());
+            ps.setString(5, employee.getPhone());
+            tmp = true;
+        } catch (SQLException e) {
+            String state = e.getSQLState();
+            if (state.equals("21S01")) // Null inserted
+                tmp = false;
+            else if (state.equals("23000")) // Duplicate Value
+                tmp = false;
+            else for (Throwable t : e
+                ) {
+                    t.printStackTrace();
+                }
+        }
+        return tmp;
+    }
+
+    public static User getInformation(Employee employee) {
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM employee WHERE employee.id = ?")) {
+            ps.setInt(1,employee.getId());
         } catch (SQLException e) {
             for (Throwable t : e
             ) {
@@ -56,9 +120,10 @@ public class DButil {
         }
     }
 
-    public static ResultSet getData() {
-        try {
-            Connection conn = ds.getConnection();
+    public static User[] getData() {
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM employee")) {
+
         } catch (SQLException e) {
             for (Throwable t : e
             ) {
