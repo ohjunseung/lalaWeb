@@ -5,6 +5,11 @@ import java.io.Serializable;
 public class User implements Serializable {
     private String email, pass;
 
+    public User(String email, String pass) {
+        this.email = email;
+        this.pass = pass;
+    }
+
     public String getEmail() {
         return email;
     }

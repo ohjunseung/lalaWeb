@@ -6,4 +6,20 @@
     <welcome-file-list>
         <welcome-file>/WEB-INF/index.jsp</welcome-file>
     </welcome-file-list>
+    <servlet>
+        <servlet-name>about</servlet-name>
+        <jsp-file>/WEB-INF/aboutus.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>desc</servlet-name>
+        <jsp-file>/WEB-INF/desc.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>about</servlet-name>
+        <url-pattern>/aboutus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>desc</servlet-name>
+        <url-pattern>/desc</url-pattern>
+    </servlet-mapping>
 </web-app>
