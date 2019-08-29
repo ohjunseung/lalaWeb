@@ -21,11 +21,14 @@ body{
 	padding: 10px 0px;
 	text-shadow: 2px 2px black;
 }
-.error{
-	display:none;
+#error{
+	display:inline-block;
 	margin-left: 20px;
 	padding: 10px 0px;
 	color: darkred;
+}
+#error:empty{
+	display:none;
 }
 .textbox{
 	width: 90%;
