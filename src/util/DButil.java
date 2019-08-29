@@ -142,7 +142,7 @@ public class DButil {
         }
     }*/
 
-    protected static String hashSHA256(String msg) {
+    private static String hashSHA256(String msg) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] digested = md.digest(msg.getBytes());
