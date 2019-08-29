@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class DButil {
     private static BasicDataSource ds;
 
-    private static BasicDataSource getInstance() {
+    static{
         if (ds == null) {
             ds = new BasicDataSource();
             ds.setUrl("jdbc:mysql://localhost:3306/eis");
@@ -25,16 +25,15 @@ public class DButil {
             ds.setMaxIdle(10);
             ds.setMaxOpenPreparedStatements(100);
         }
-        return ds;
     }
 
-    public static boolean checkAdmin(User user) {
+    public static boolean checkAdmin(String admin,Connection conn) {
         boolean tmp = false;
-        try (Connection conn = ds.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT user.Email FROM user LEFT JOIN employee ON user.Email = employee.Email WHERE employee.ID IS NULL")) {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next())
-                tmp = user.getEmail().equals(rs.getString(1));
+        try (PreparedStatement ps = conn.prepareStatement("SELECT user.Email FROM user LEFT JOIN employee ON user.Email = employee.Email WHERE employee.ID IS NULL")) {
+            try(ResultSet rs = ps.executeQuery()) {
+                while (rs.next())
+                    tmp = admin.equals(rs.getString(1));
+            }
         } catch (SQLException e) {
             for (Throwable t : e
             ) {
@@ -44,14 +43,21 @@ public class DButil {
         return tmp;
     }
 
-    public static boolean checkUser(User user) {
-        boolean tmp = false;
+    public static int checkUser(User user) {
+        /*  0 = FALSE
+            1 = Normal
+            2 = Admin
+        */
+        int tmp = 0;
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT Email FROM user WHERE Email = ? AND Pass = ?")) {
             ps.setString(1, user.getEmail());
             ps.setString(2, hashSHA256(user.getPass()));
-            ResultSet rs = ps.executeQuery();
-            tmp = rs.next();
+            try(ResultSet rs = ps.executeQuery()) {
+                if (checkAdmin(rs.getString(1),conn))
+                    tmp = 2;
+                else tmp = 1;
+            }
         } catch (SQLException e) {
             for (Throwable t : e
             ) {
@@ -108,10 +114,10 @@ public class DButil {
         return tmp;
     }
 
-    public static User getInformation(Employee employee) {
+/*    public static User getInformation(Employee employee) {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT * FROM employee WHERE employee.id = ?")) {
-            ps.setInt(1,employee.getId());
+            ps.setInt(1, employee.getId());
         } catch (SQLException e) {
             for (Throwable t : e
             ) {
@@ -123,14 +129,13 @@ public class DButil {
     public static User[] getData() {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT * FROM employee")) {
-
         } catch (SQLException e) {
             for (Throwable t : e
             ) {
                 t.printStackTrace();
             }
         }
-    }
+    }*/
 
     private static String hashSHA256(String msg) {
         try {
