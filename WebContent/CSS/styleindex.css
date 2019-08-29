@@ -1,0 +1,81 @@
+*{
+	font-family: cursive;
+}
+body{
+	margin: 0;
+	padding: 0;
+	font-family: "Montserrat";
+	background-color: lightblue;
+	background-size: cover;
+}
+.box{
+	background-color: white;
+	width: 80%;
+	max-width: 1000px;
+	min-width: 400px;
+	margin: 50px;
+	border-radius: 10px;
+	padding: 10px;
+}
+.pic{
+	width: 15%;
+	border-radius: 50%;
+}
+.info{
+	font-size: 20px;
+	padding: 8px;
+	margin: 8px 20px;
+	border-bottom: 2px solid black;
+	border-radius: 40px;
+}
+.edit{
+	width: 30%;
+	border: 2px solid ;
+	color: black;
+	padding: 5px;
+	cursor: pointer;
+	margin: 10px 20px;
+	float: left;
+}
+#name{
+	color: black;
+	margin-left: 85%;
+	margin-right: 20px;
+}
+.navbar{
+	position: fixed;
+	height: 80px;
+	top: 0;
+	display: flex;
+	align-items: center;
+	background: #f1f1f1;
+	width: 102%;
+	margin-left: -10px;
+	margin-right: -10px;
+}
+.menu{
+	position: absolute;
+}
+.menu a{
+	color: #333;
+	text-decoration: none;
+	font-weight: 700;
+	margin-left: 20px;
+	transition: color 0.3s;
+	text-transform: uppercase;
+}
+.menu a:hover{
+	color: #6ab04c;
+}
+.content p{
+	padding: 20px;
+	font-size: 20px;
+	text-align: justify;
+}
+.content{
+	text-align: center;
+	font-size: 20px;
+	margin: 150px 100px;
+	background-color: white;
+	border: 2px solid black;
+}

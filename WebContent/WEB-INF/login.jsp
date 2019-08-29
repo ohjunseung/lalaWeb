@@ -2,28 +2,26 @@
 <head>
 	<meta charset="utf-8">
 	<title>Login Form</title>
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="/CSS/style.css">
 </head>
 <body>
 	<div class="login-box">
 		<h1>Login</h1>
-		<form id="login" action="mainpage.html" method="get">
+		<form id="login" action="login" method="post">
 		<div class="textbox">
 			<i class="fa fa-user" aria-hidden="true"></i>
-			<input typ e="text" placeholder="Username" name="username">
+			<input type="text" placeholder="Email" name="email">
 		</div>
 		<div class="textbox">
 			<i class="fa fa-lock" aria-hidden="true"></i>
-			<input type="password" placeholder="Password">
+			<input type="password" placeholder="Password" name="pass">
+		</div>
+		<div class="error">
+			<p>Please input the right email / password!</p>
 		</div>
 		<input class="btnleft" type="submit" value="Submit">
-		<input class="btnright" type="button" onclick="myFunction()" value="Reset">
+		<input class="btnright" type="reset" value="Reset">
 		</form>
 	</div>
-	<script>
-		function myFunction() {
-		document.getElementById("login").reset();
-		}
-	</script>
 </body>
 </html>
