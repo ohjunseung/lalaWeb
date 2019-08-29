@@ -5,15 +5,15 @@
 <head>
 	<meta charset="utf-8">
 	<title>Description</title>
-	<link rel="stylesheet" href="/CSS/styleindex.css">
+	<link rel="stylesheet" href="CSS/styleindex.css">
 </head>
 <body>
 	<div class="navbar">
 		<h2 id="Name">Company Name</h2>
 		<div class="menu">
-			<a href="index.jsp">Home</a>
-			<a href="desc.jsp">Description</a>
-			<a href="aboutus.jsp">About</a>
+			<a href="${pageContext.request.contextPath}">Home</a>
+			<a href="${pageContext.request.contextPath}/desc">Description</a>
+			<a href="${pageContext.request.contextPath}/aboutus">About</a>
 		</div>
 	</div>
 	<div class="content">

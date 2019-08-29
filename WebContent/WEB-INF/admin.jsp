@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Admin Page</title>
-	<link rel="stylesheet" href="/CSS/styleadmin.css">
+	<link rel="stylesheet" href="CSS/styleadmin.css">
 </head>
 <body>
 	<div class="content">

@@ -5,7 +5,18 @@
 <head>
 	<meta charset="utf-8">
 	<title>Login Form</title>
-	<link rel="stylesheet" href="/CSS/style.css">
+	<link rel="stylesheet" href="CSS/style.css">
+	<script>
+	window.onload = check();
+	function check(){
+		const param = new URLSearchParams(window.location.search);
+		const myParam = param.get('incorrect');
+		
+		if (myParam == 'true'){
+			document.getElementById('error').innerHTML = "Email / password is wrong!";
+		}
+	}
+	</script>
 </head>
 <body>
 	<div class="login-box">
@@ -19,9 +30,7 @@
 			<i class="fa fa-lock" aria-hidden="true"></i>
 			<input type="password" placeholder="Password" name="pass">
 		</div>
-		<div class="error">
-			<p>Please input the right email / password!</p>
-		</div>
+		<div id="error"></div>
 		<input class="btnleft" type="submit" value="Submit">
 		<input class="btnright" type="reset" value="Reset">
 		</form>
