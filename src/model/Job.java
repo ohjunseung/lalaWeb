@@ -10,6 +10,12 @@ public class Job implements Serializable {
         return salary;
     }
 
+    public Job(String name, String code, double salary) {
+        this.name = name;
+        this.code = code;
+        this.salary = salary;
+    }
+
     public void setSalary(double salary) {
         this.salary = salary;
     }
