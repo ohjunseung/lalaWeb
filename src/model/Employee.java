@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 
 public class Employee implements Serializable {
-    private String fname, lname, email, phone, jobCode;
+    private String fname, lname, email, phone, jobName, salary;
     private int id;
 
     public String getFname() {
@@ -38,12 +38,12 @@ public class Employee implements Serializable {
         this.phone = phone;
     }
 
-    public String getJobCode() {
-        return jobCode;
+    public String getJobName() {
+        return jobName;
     }
 
-    public void setJobCode(String jobCode) {
-        this.jobCode = jobCode;
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
     }
 
     public int getId() {
@@ -52,5 +52,13 @@ public class Employee implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getSalary() {
+        return salary;
+    }
+
+    public void setSalary(String salary) {
+        this.salary = salary;
     }
 }

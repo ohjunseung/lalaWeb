@@ -1,6 +1,7 @@
 package util;
 
 import model.Employee;
+import model.Job;
 import model.User;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 
@@ -10,6 +11,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DButil {
     private static BasicDataSource ds;
@@ -27,15 +31,13 @@ public class DButil {
         }
     }
 
-    private static boolean checkAdmin(String admin, Connection conn) {
+    private static boolean checkAdmin(String admin, Connection conn) throws SQLException{
         boolean tmp = false;
         try (PreparedStatement ps = conn.prepareStatement("SELECT user.Email FROM user LEFT JOIN employee ON user.Email = employee.Email WHERE employee.ID IS NULL")) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next())
                     tmp = admin.equals(rs.getString(1));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return tmp;
     }
@@ -96,7 +98,7 @@ public class DButil {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO " +
                      "employee(Job_code,Firstname,Lastname,Email,Phone) VALUES(?,?,?,?,?)")) {
-            ps.setString(1, employee.getJobCode());
+            ps.setString(1, employee.getJobName());
             ps.setString(2, employee.getFname());
             ps.setString(3, employee.getLname());
             ps.setString(4, employee.getEmail());
@@ -113,20 +115,34 @@ public class DButil {
         return tmp;
     }
 
+    private static Map<String, Job> getJobs(Connection conn) throws SQLException{
+        HashMap<String,String> jobs = new HashMap<>();
+        try (PreparedStatement psJob = conn.prepareStatement("SELECT Job_code,Job_name,Job_salary " +
+                "FROM employee NATURAL JOIN jobs;")) {
+            try(ResultSet rs = psJob.executeQuery()) {
+                while (rs.next()) {
+                    jobs.put()
+                }
+            }
+        }
+        return jobs;
+    }
+
     public static Employee getInformation(User user) {
         Employee employee = new Employee();
 
         try (Connection conn = ds.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT ID, Job_code, Firstname, Lastname, Email, Phone " +
+             PreparedStatement ps = conn.prepareStatement("SELECT ID, Lastname, Email, Phone, Job_code " +
                      "FROM employee WHERE employee.Email = ?")) {
             ps.setString(1, user.getEmail());
             try (ResultSet rs = ps.executeQuery()) {
-                employee.setId(rs.getInt(1));
-                employee.setJobCode(rs.getString(2));
-                employee.setFname(rs.getString(3));
-                employee.setLname(rs.getString(4));
-                employee.setEmail(rs.getString(5));
-                employee.setPhone(rs.getString(6));
+                if (rs.next()) {
+                    employee.setId(rs.getInt(1));
+                    employee.setFname(rs.getString(2));
+                    employee.setLname(rs.getString(3));
+                    employee.setEmail(rs.getString(4));
+                    employee.setPhone(rs.getString(5));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -134,15 +150,29 @@ public class DButil {
         return employee;
     }
 
-/*    public static Employee[] getData() {
+    public static ArrayList<Employee> getData() {
+        ArrayList<Employee> employees = new ArrayList<>();
         try (Connection conn = ds.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM employee")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT ID, Firstname, Lastname, Email, Phone, Job_code" +
+                     " FROM employee")) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Employee employee = new Employee();
+                    employee.setId(rs.getInt(1));
+                    employee.setFname(rs.getString(2));
+                    employee.setLname(rs.getString(3));
+                    employee.setEmail(rs.getString(4));
+                    employee.setPhone(rs.getString(5));
+                    employees.add(employee);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }*/
+        return employees;
+    }
 
-    protected static String hashSHA256(String msg) {
+    private static String hashSHA256(String msg) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] digested = md.digest(msg.getBytes());
