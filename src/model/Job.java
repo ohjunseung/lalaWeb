@@ -3,17 +3,17 @@ package model;
 import java.io.Serializable;
 
 public class Job implements Serializable {
-    private String name, code;
+    private String code, name;
     private double salary;
+
+    public Job(String code, String name, double salary) {
+        this.code = code;
+        this.name = name;
+        this.salary = salary;
+    }
 
     public double getSalary() {
         return salary;
-    }
-
-    public Job(String name, String code, double salary) {
-        this.name = name;
-        this.code = code;
-        this.salary = salary;
     }
 
     public void setSalary(double salary) {

@@ -29,13 +29,14 @@ public class EmployeeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //TODO Belum selesai cung!
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
         if (user == null || DButil.checkAdmin(user))
             resp.sendRedirect(getServletContext().getContextPath() + "/login");
         else {
             Employee employee = (Employee) session.getAttribute("employee");
-            DButil.editInformation(employee,user);
+            DButil.editInformation(employee, user);
             employee = DButil.getInformation(user);
             session.setAttribute("employee", employee);
             req.getRequestDispatcher("/WEB-INF/employee.jsp").forward(req, resp);

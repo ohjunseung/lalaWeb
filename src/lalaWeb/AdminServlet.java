@@ -19,10 +19,9 @@ public class AdminServlet extends HttpServlet {
         try {
             User user = (User) session.getAttribute("user");
             if (DButil.checkAdmin(user)) {
-                session.setAttribute("employeeData",DButil.getEmployees());
+                session.setAttribute("employeeData", DButil.getEmployees());
                 req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
-            }
-            else resp.sendRedirect(getServletContext().getContextPath() + "/login");
+            } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {
             resp.sendRedirect(getServletContext().getContextPath() + "/login");
         }

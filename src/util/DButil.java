@@ -130,7 +130,7 @@ public class DButil {
     public static Employee getInformation(User user) {
         Employee employee = new Employee();
         try (Connection conn = ds.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT ID, Lastname, Email, Phone, Job_code " +
+             PreparedStatement ps = conn.prepareStatement("SELECT ID, Firstname, Lastname, Email, Phone, Job_code " +
                      "FROM employee WHERE employee.Email = ?")) {
             HashMap<String, Job> jobs = getJobs(conn);
             ps.setString(1, user.getEmail());
@@ -153,30 +153,30 @@ public class DButil {
         return employee;
     }
 
-    public static void editInformation(Employee employee,User user) {
+    public static void editInformation(Employee employee, User user) {
         try (Connection conn = ds.getConnection();
-        PreparedStatement ps = conn.prepareStatement("UPDATE employee SET Firstname = ? ,Lastname = ? ," +
-                "Email = ? ,Phone = ? WHERE ID = ?")) {
-            ps.setString(1,employee.getFname());
-            ps.setString(2,employee.getLname());
-            ps.setString(3,employee.getEmail());
-            ps.setString(4,employee.getPhone());
-            ps.setInt(5,employee.getId());
+             PreparedStatement ps = conn.prepareStatement("UPDATE employee SET Firstname = ? ,Lastname = ? ," +
+                     "Email = ? ,Phone = ? WHERE ID = ?")) {
+            ps.setString(1, employee.getFname());
+            ps.setString(2, employee.getLname());
+            ps.setString(3, employee.getEmail());
+            ps.setString(4, employee.getPhone());
+            ps.setInt(5, employee.getId());
             ps.executeUpdate();
-            editUser(new User(employee.getEmail(),user.getPass()),user);
+            editUser(new User(employee.getEmail(), user.getPass()), user);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void editUser(User user,User old) {
+    public static void editUser(User user, User old) {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("UPDATE user SET Email = ?, Pass = ? " +
                      "WHERE Email = ? AND Pass = ?")) {
-            ps.setString(1,user.getEmail());
-            ps.setString(2,hashSHA256(user.getPass()));
-            ps.setString(3,old.getEmail());
-            ps.setString(4,hashSHA256(old.getPass()));
+            ps.setString(1, user.getEmail());
+            ps.setString(2, hashSHA256(user.getPass()));
+            ps.setString(3, old.getEmail());
+            ps.setString(4, hashSHA256(old.getPass()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
