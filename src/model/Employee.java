@@ -3,8 +3,9 @@ package model;
 import java.io.Serializable;
 
 public class Employee implements Serializable {
-    private String fname, lname, email, phone, jobName, salary;
+    private String fname, lname, email, phone, jobName;
     private int id;
+    private double salary;
 
     public String getFname() {
         return fname;
@@ -54,11 +55,11 @@ public class Employee implements Serializable {
         this.id = id;
     }
 
-    public String getSalary() {
+    public double getSalary() {
         return salary;
     }
 
-    public void setSalary(String salary) {
+    public void setSalary(double salary) {
         this.salary = salary;
     }
 }

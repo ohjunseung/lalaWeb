@@ -1,6 +1,5 @@
 package lalaWeb;
 
-import model.Employee;
 import model.User;
 import util.DButil;
 
@@ -20,7 +19,7 @@ public class AdminServlet extends HttpServlet {
         try {
             User user = (User) session.getAttribute("user");
             if (DButil.checkAdmin(user)) {
-                session.setAttribute("employeeData",DButil.getData());
+                session.setAttribute("employeeData",DButil.getEmployees());
                 req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
             }
             else resp.sendRedirect(getServletContext().getContextPath() + "/login");

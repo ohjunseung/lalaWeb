@@ -1,8 +1,6 @@
 package util;
 
-import model.Employee;
-import model.Job;
-import model.User;
+import model.*;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 
 import java.security.MessageDigest;
@@ -13,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class DButil {
     private static BasicDataSource ds;
@@ -31,9 +28,10 @@ public class DButil {
         }
     }
 
-    private static boolean checkAdmin(String admin, Connection conn) throws SQLException{
+    private static boolean checkAdmin(String admin, Connection conn) throws SQLException {
         boolean tmp = false;
-        try (PreparedStatement ps = conn.prepareStatement("SELECT user.Email FROM user LEFT JOIN employee ON user.Email = employee.Email WHERE employee.ID IS NULL")) {
+        try (PreparedStatement ps = conn.prepareStatement("SELECT user.Email FROM user LEFT JOIN employee " +
+                "ON user.Email = employee.Email WHERE employee.ID IS NULL")) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next())
                     tmp = admin.equals(rs.getString(1));
@@ -115,13 +113,14 @@ public class DButil {
         return tmp;
     }
 
-    private static Map<String, Job> getJobs(Connection conn) throws SQLException{
-        HashMap<String,String> jobs = new HashMap<>();
+    private static HashMap<String, Job> getJobs(Connection conn) throws SQLException {
+        HashMap<String, Job> jobs = new HashMap<>();
         try (PreparedStatement psJob = conn.prepareStatement("SELECT Job_code,Job_name,Job_salary " +
                 "FROM employee NATURAL JOIN jobs;")) {
-            try(ResultSet rs = psJob.executeQuery()) {
+            try (ResultSet rs = psJob.executeQuery()) {
                 while (rs.next()) {
-                    jobs.put()
+                    Job job = new Job(rs.getString(1), rs.getString(2), rs.getDouble(3));
+                    jobs.put(job.getCode(), job);
                 }
             }
         }
@@ -130,11 +129,12 @@ public class DButil {
 
     public static Employee getInformation(User user) {
         Employee employee = new Employee();
-
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT ID, Lastname, Email, Phone, Job_code " +
                      "FROM employee WHERE employee.Email = ?")) {
+            HashMap<String, Job> jobs = getJobs(conn);
             ps.setString(1, user.getEmail());
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     employee.setId(rs.getInt(1));
@@ -142,6 +142,9 @@ public class DButil {
                     employee.setLname(rs.getString(3));
                     employee.setEmail(rs.getString(4));
                     employee.setPhone(rs.getString(5));
+                    Job temp = jobs.get(rs.getString(6));
+                    employee.setJobName(temp.getName());
+                    employee.setSalary(temp.getSalary());
                 }
             }
         } catch (SQLException e) {
@@ -150,11 +153,41 @@ public class DButil {
         return employee;
     }
 
-    public static ArrayList<Employee> getData() {
+    public static void editInformation(Employee employee,User user) {
+        try (Connection conn = ds.getConnection();
+        PreparedStatement ps = conn.prepareStatement("UPDATE employee SET Firstname = ? ,Lastname = ? ," +
+                "Email = ? ,Phone = ? WHERE ID = ?")) {
+            ps.setString(1,employee.getFname());
+            ps.setString(2,employee.getLname());
+            ps.setString(3,employee.getEmail());
+            ps.setString(4,employee.getPhone());
+            ps.setInt(5,employee.getId());
+            ps.executeUpdate();
+            editUser(new User(employee.getEmail(),user.getPass()),user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void editUser(User user,User old) {
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement("UPDATE user SET Email = ?, Pass = ? " +
+                     "WHERE Email = ? AND Pass = ?")) {
+            ps.setString(1,user.getEmail());
+            ps.setString(2,hashSHA256(user.getPass()));
+            ps.setString(3,old.getEmail());
+            ps.setString(4,hashSHA256(old.getPass()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<Employee> getEmployees() {
         ArrayList<Employee> employees = new ArrayList<>();
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT ID, Firstname, Lastname, Email, Phone, Job_code" +
                      " FROM employee")) {
+            HashMap<String, Job> jobs = getJobs(conn);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Employee employee = new Employee();
@@ -163,6 +196,9 @@ public class DButil {
                     employee.setLname(rs.getString(3));
                     employee.setEmail(rs.getString(4));
                     employee.setPhone(rs.getString(5));
+                    Job temp = jobs.get(rs.getString(6));
+                    employee.setJobName(temp.getName());
+                    employee.setSalary(temp.getSalary());
                     employees.add(employee);
                 }
             }
