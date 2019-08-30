@@ -1,6 +1,8 @@
 package lalaWeb;
 
+import model.Employee;
 import model.User;
+import util.DButil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,10 +17,14 @@ public class EmployeeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-            User user = (User) session.getAttribute("user");
-            if (user == null)
-                resp.sendRedirect(getServletContext().getContextPath());
-            else req.getRequestDispatcher("/WEB-INF/employee.jsp").forward(req,resp);
+        User user = (User) session.getAttribute("user");
+        if (user == null || DButil.checkAdmin(user))
+            resp.sendRedirect(getServletContext().getContextPath() + "/login");
+        else {
+            Employee employee = DButil.getInformation(user);
+            session.setAttribute("employee", employee);
+            req.getRequestDispatcher("/WEB-INF/employee.jsp").forward(req, resp);
+        }
     }
 
     @Override

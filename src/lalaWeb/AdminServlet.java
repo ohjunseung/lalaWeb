@@ -1,5 +1,6 @@
 package lalaWeb;
 
+import model.Employee;
 import model.User;
 import util.DButil;
 
@@ -19,11 +20,12 @@ public class AdminServlet extends HttpServlet {
         try {
             User user = (User) session.getAttribute("user");
             if (DButil.checkAdmin(user)) {
+                session.setAttribute("employeeData",DButil.getData());
                 req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
             }
-            else resp.sendRedirect(getServletContext().getContextPath());
+            else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {
-            resp.sendRedirect(getServletContext().getContextPath());
+            resp.sendRedirect(getServletContext().getContextPath() + "/login");
         }
     }
 
