@@ -23,11 +23,11 @@
 			</div>
 			<div class="textbox">
 				<p>Firstname</p>
-				<input type="text" name="fName" disabled value=${i.fName} >
+				<input type="text" name="fName" disabled value=${i.fname} >
 			</div>
 			<div class="textbox">
 				<p>Lastname</p>
-				<input type="text" name="lName" disabled value=${i.lName} >
+				<input type="text" name="lName" disabled value=${i.lname} >
 			</div>
 			<div class="textbox">
 				<p>Email</p>

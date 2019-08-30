@@ -40,7 +40,7 @@ body{
 	float: left;
 	margin: 10px 50px;
 }
-.btn {
+.btnleft {
 	width: 30%;
 	background: #2f3640;
 	border: 2px solid #4caf50;
@@ -49,6 +49,17 @@ body{
 	cursor: pointer;
 	margin: 10px 20px;
 	float: left;
+}
+.btnright {
+	display: none;
+	width: 30%;
+	background: #2f3640;
+	border: 2px solid #4caf50;
+	color: white;
+	padding: 5px ;
+	cursor: pointer;
+	margin: 10px 20px;
+	float: right;
 }
 #name{
 	color: black;
