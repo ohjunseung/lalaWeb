@@ -11,37 +11,45 @@
 	<div class="navbar">
 		<h2 id="Name">Company Name</h2>
 		<div class="menu">
-			<a href="index.jsp">Home</a>
-			<a href="desc.jsp">Description</a>
-			<a href="aboutus.jsp">About</a>
+			<a href="${pageContext.request.contextPath}">Home</a>
+			<a href="${pageContext.request.contextPath}/desc">Description</a>
+			<a href="${pageContext.request.contextPath}/aboutus">About</a>
 		</div>
 	</div>
-		<table class="box" border="1px">
-		<tr>
-			<td rowspan="2" class="pic">A</td>
-			<td class="info">ID</td>
-		</tr>
-		<tr>
-			<td class="info">Jobs</td>
-		</tr>
-		<tr>
-			<td colspan="2" class="info">Firstname</td>
-		</tr>
-		<tr>
-			<td colspan="2" class="info">Lastname</td>
-		</tr>
-		<tr>
-			<td colspan="2" class="info">Email</td>
-		</tr>
-		<tr>
-			<td colspan="2" class="info">Phone</td>
-		</tr>
-		<tr>
-			<td colspan="2" class="info">Salary</td>
-		</tr>
-		<tr>
-			<td class="edit">Edit</td>
-		</tr>
-		</table>
+	<div class="box">
+		<form>
+			<div class="textbox">
+				<p>ID</p>
+				<input type="text" name="id" disabled value=${employee.id}>
+			</div>
+			<div class="textbox">
+				<p>Job</p>
+				<input type="text" name="job" disabled value=${employee.jobName} >
+			</div>
+			<div class="textbox">
+				<p>Firstname</p>
+				<input type="text" name="fName" disabled value=${employee.fName} >
+			</div>
+			<div class="textbox">
+				<p>Lastname</p>
+				<input type="text" name="lName" disabled value=${employee.lName} >
+			</div>
+			<div class="textbox">
+				<p>Email</p>
+				<input type="text" name="email" disabled value=${employee.email}>
+			</div>
+			<div class="textbox">
+				<p>Phone number</p>
+				<input type="text" name="phone" disabled value=${employee.phone} >
+			</div>
+			<div class="textbox">
+				<p>Salary</p>
+				<input type="text" name="salary" disabled value=${employee.salary} >
+			</div>
+			<div>
+				<input class="btn" type="button" value="Edit">
+			</div>
+		</form>
+	</div>
 </body>
 </html>
