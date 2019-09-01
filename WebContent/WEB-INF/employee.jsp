@@ -29,7 +29,7 @@
 		</div>
 	</div>
 	<div class="box">
-		<form action="login" method="post">
+		<form action="employee" method="post">
 			<div class="textbox">
 				<p>ID</p>
 				<input type="text" name="id" readonly value=${employee.id}>
