@@ -35,10 +35,18 @@ public class EmployeeServlet extends HttpServlet {
         if (user == null || DButil.checkAdmin(user))
             resp.sendRedirect(getServletContext().getContextPath() + "/login");
         else {
-            Employee employee = (Employee) session.getAttribute("employee");
-            DButil.editInformation(employee, user);
+            Employee employee = new Employee();
+            employee.setId(Integer.parseInt(req.getParameter("id")));
+            employee.setFname(req.getParameter("fname"));
+            employee.setLname(req.getParameter("lname"));
+            employee.setEmail(req.getParameter("email"));
+            employee.setPhone(req.getParameter("phone"));
+            User newUser = new User(req.getParameter("email"),user.getPass());
+            DButil.editUser(user,newUser);
+            DButil.editInformation(employee);
             employee = DButil.getInformation(user);
             session.setAttribute("employee", employee);
+            session.setAttribute("user", newUser);
             req.getRequestDispatcher("/WEB-INF/employee.jsp").forward(req, resp);
         }
     }
