@@ -27,7 +27,7 @@
             <i class="fa fa-lock" aria-hidden="true"></i>
             <input type="password" placeholder="Password" name="pass">
         </div>
-        <div id="error"></div>
+        <div class="error" id="error"></div>
         <input class="btnleft" type="submit" value="Submit">
         <input class="btnright" type="reset" value="Reset">
     </form>
