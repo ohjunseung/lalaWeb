@@ -29,7 +29,6 @@ public class EmployeeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //TODO Belum selesai cung!
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
         if (user == null || DBUtil.checkAdmin(user))

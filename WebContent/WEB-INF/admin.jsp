@@ -21,7 +21,6 @@
 			document.getElementById("btnright${loop.index}").style.display = "inline";
 			
 		}
-	
 		</script>
     	<div class="box">
 		<form action="admin" method="post">
@@ -31,13 +30,13 @@
 			</div>
 			<div class="textbox">
 				<p>Job</p>
-				<select id="job" class="edit${loop.index}" disabled required name="job">
+				<select id="job${loop.index}" class="edit${loop.index}" disabled required name="job">
 					<c:forEach var = "a" items = "${jobs}">
 						<option value=${a.key}>${a.value}</option>
 					</c:forEach>
 				</select>
 				<script>
-					document.getElementById("job").value = "${i.jobCode}";		
+					document.getElementById("job${loop.index}").value = "${i.jobCode}";
 				</script>
 			</div>
 			<div class="textbox">
@@ -62,7 +61,7 @@
 			</div>
 			<div>
 				<input class="btnleft" type="button" value="Edit" onclick="btn1${loop.index}()">
-				<input id="btnright${loop.index}" class="btnright" type="submit" value="Confirm" onclick="btn2${loop.index}()">
+				<input id="btnright${loop.index}" class="btnright" type="submit" value="Confirm">
 			</div>
 		</form>
 	</div>
