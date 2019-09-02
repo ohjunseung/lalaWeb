@@ -1,5 +1,6 @@
 package lalaWeb;
 
+import model.Employee;
 import model.User;
 import util.DButil;
 
@@ -29,6 +30,20 @@ public class AdminServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        HttpSession session = req.getSession();
+        try {
+            User user = (User) session.getAttribute("user");
+            if (DButil.checkAdmin(user)) {
+                Employee employee = new Employee();
+                employee.setId(Integer.parseInt(req.getParameter("id")));
+                employee.setPhone(req.getParameter("jobName"));
+                DButil.editEmployee(employee);
+                session.setAttribute("employeeData", DButil.getEmployees());
+                session.setAttribute("jobs", DButil.getJobs());
+                req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
+            } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
+        } catch (NullPointerException e) {
+            resp.sendRedirect(getServletContext().getContextPath() + "/login");
+        }
     }
 }
