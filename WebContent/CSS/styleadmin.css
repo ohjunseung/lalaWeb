@@ -35,7 +35,7 @@ body{
 .textbox input {
 	border: none;
 	outline: none;
-	background:none;
+	background: none;
 	color: white;
 	font-size: 16px;
 	width: 200px;
@@ -45,12 +45,15 @@ body{
 .textbox select {
 	border: none;
 	outline: none;
-	background:none;
+	background: none;
 	color: white;
 	font-size: 16px;
 	width: 200px;
 	float: left;
 	margin: 10px 50px;
+}
+.textbox option{
+	color: black;
 }
 .btnleft {
 	width: 30%;

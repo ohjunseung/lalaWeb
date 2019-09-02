@@ -37,9 +37,7 @@
 				<p>Job</p>
 				<input class="jobinfo" type="text" name="job" disabled value=${i.jobName} >
 				<select class="select" required>
-					<option value=${jobs.key}>A</option>
-					<option value=${jobs.key}>B</option>
-					<option value=${jobs.key}>C</option>
+					<option value=${jobs.key}>${jobs.value}</option>
 				</select>
 			</div>
 			<div class="textbox">
