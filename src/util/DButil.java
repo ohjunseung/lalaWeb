@@ -114,28 +114,26 @@ public class DButil {
         return tmp;
     }
 
-    private static HashMap<String, Job> getJobs(Connection conn, boolean codeAsKey) throws SQLException {
+    private static HashMap<String, Job> getJobs(Connection conn) throws SQLException {
         HashMap<String, Job> jobs = new HashMap<>();
         try (PreparedStatement psJob = conn.prepareStatement("SELECT Job_code,Job_name,Job_salary " +
-                "FROM employee NATURAL JOIN jobs;")) {
+                "FROM jobs;")) {
             try (ResultSet rs = psJob.executeQuery()) {
                 while (rs.next()) {
                     Job job = new Job(rs.getString(1), rs.getString(2), rs.getDouble(3));
-                    if (codeAsKey)
-                        jobs.put(job.getCode(), job);
-                    else jobs.put(job.getName(), job);
+                    jobs.put(job.getCode(), job);
                 }
             }
         }
         return jobs;
     }
 
-    public static HashMap<String,String> getJobs() {
-        HashMap<String,String> jobsPair = new HashMap<>();
+    public static HashMap<String, String> getJobs() {
+        HashMap<String, String> jobsPair = new HashMap<>();
         try (Connection conn = ds.getConnection()) {
-            HashMap<String,Job> jobs = getJobs(conn,true);
-            jobs.forEach((K,V) -> {
-                jobsPair.put(K,V.getName());
+            HashMap<String, Job> jobs = getJobs(conn);
+            jobs.forEach((K, V) -> {
+                jobsPair.put(K, V.getName());
             });
         } catch (SQLException e) {
             e.printStackTrace();
@@ -146,9 +144,9 @@ public class DButil {
     public static Employee getInformation(User user) {
         Employee employee = new Employee();
         try (Connection conn = ds.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT ID, Firstname, Lastname, Email, Phone, Job_code " +
-                     "FROM employee WHERE employee.Email = ?")) {
-            HashMap<String, Job> jobs = getJobs(conn, true);
+             PreparedStatement ps = conn.prepareStatement("SELECT ID, Firstname, Lastname, Email, Phone, Job_code, " +
+                     "Job_name,Job_salary FROM employee NATURAL JOIN jobs WHERE employee.Email = ?")) {
+            HashMap<String, Job> jobs = getJobs(conn);
             ps.setString(1, user.getEmail());
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -158,9 +156,9 @@ public class DButil {
                     employee.setLname(rs.getString(3));
                     employee.setEmail(rs.getString(4));
                     employee.setPhone(rs.getString(5));
-                    Job temp = jobs.get(rs.getString(6));
-                    employee.setJobName(temp.getName());
-                    employee.setSalary(temp.getSalary());
+                    employee.setJobCode(rs.getString(6));
+                    employee.setJobName(rs.getString(7));
+                    employee.setSalary(rs.getDouble(8));
                 }
             }
         } catch (SQLException e) {
@@ -200,9 +198,9 @@ public class DButil {
     public static ArrayList<Employee> getEmployees() {
         ArrayList<Employee> employees = new ArrayList<>();
         try (Connection conn = ds.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT ID, Firstname, Lastname, Email, Phone, Job_code" +
-                     " FROM employee")) {
-            HashMap<String, Job> jobs = getJobs(conn, true);
+             PreparedStatement ps = conn.prepareStatement("SELECT ID, Firstname, Lastname, Email, Phone, Job_code, " +
+                     "Job_name,Job_salary FROM employee NATURAL JOIN jobs;")) {
+            HashMap<String, Job> jobs = getJobs(conn);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Employee employee = new Employee();
@@ -211,9 +209,9 @@ public class DButil {
                     employee.setLname(rs.getString(3));
                     employee.setEmail(rs.getString(4));
                     employee.setPhone(rs.getString(5));
-                    Job temp = jobs.get(rs.getString(6));
-                    employee.setJobName(temp.getName());
-                    employee.setSalary(temp.getSalary());
+                    employee.setJobCode(rs.getString(6));
+                    employee.setJobName(rs.getString(7));
+                    employee.setSalary(rs.getDouble(8));
                     employees.add(employee);
                 }
             }
@@ -225,23 +223,10 @@ public class DButil {
 
     public static void editEmployee(Employee employee) {
         try (Connection conn = ds.getConnection();
-             PreparedStatement ps = conn.prepareStatement("UPDATE employee SET ID = ? WHERE ID = ?")) {
+             PreparedStatement ps = conn.prepareStatement("UPDATE employee SET ID = ?,Job_code = ? WHERE ID = ?")) {
             ps.setInt(1, employee.getId());
-            ps.setInt(2, employee.getId());
-            ps.executeUpdate();
-            editJob(employee);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void editJob(Employee employee) {
-        try (Connection conn = ds.getConnection();
-             PreparedStatement ps = conn.prepareStatement("UPDATE employee SET Job_code = ? WHERE ID = ?")) {
-            HashMap<String, Job> jobs = getJobs(conn,false);
-            Job temp = jobs.get(employee.getJobName());
-            ps.setString(1,temp.getCode());
-            ps.setInt(2, employee.getId());
+            ps.setString(2, employee.getJobCode());
+            ps.setInt(3, employee.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
