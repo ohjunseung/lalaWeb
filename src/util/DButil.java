@@ -153,7 +153,7 @@ public class DButil {
         return employee;
     }
 
-    public static void editInformation(Employee employee, User user) {
+    public static void editInformation(Employee employee) {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("UPDATE employee SET Firstname = ? ,Lastname = ? ," +
                      "Email = ? ,Phone = ? WHERE ID = ?")) {
@@ -163,20 +163,19 @@ public class DButil {
             ps.setString(4, employee.getPhone());
             ps.setInt(5, employee.getId());
             ps.executeUpdate();
-            editUser(new User(employee.getEmail(), user.getPass()), user);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void editUser(User user, User old) {
+    public static void editUser(User oldUser, User newUser) {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("UPDATE user SET Email = ?, Pass = ? " +
                      "WHERE Email = ? AND Pass = ?")) {
-            ps.setString(1, user.getEmail());
-            ps.setString(2, hashSHA256(user.getPass()));
-            ps.setString(3, old.getEmail());
-            ps.setString(4, hashSHA256(old.getPass()));
+            ps.setString(1, oldUser.getEmail());
+            ps.setString(2, hashSHA256(oldUser.getPass()));
+            ps.setString(3, newUser.getEmail());
+            ps.setString(4, hashSHA256(newUser.getPass()));
         } catch (SQLException e) {
             e.printStackTrace();
         }

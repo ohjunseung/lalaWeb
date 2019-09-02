@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--TODO Type check on form--%>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -29,7 +30,7 @@
 		</div>
 	</div>
 	<div class="box">
-		<form action="login" method="post">
+		<form action="employee" method="post">
 			<div class="textbox">
 				<p>ID</p>
 				<input type="text" name="id" readonly value=${employee.id}>
@@ -40,11 +41,11 @@
 			</div>
 			<div class="textbox">
 				<p>Firstname</p>
-				<input class="edit" type="text" name="fName" disabled value=${employee.fname} >
+				<input class="edit" type="text" name="fname" disabled value=${employee.fname} >
 			</div>
 			<div class="textbox">
 				<p>Lastname</p>
-				<input class="edit" type="text" name="lName" disabled value=${employee.lname} >
+				<input class="edit" type="text" name="lname" disabled value=${employee.lname} >
 			</div>
 			<div class="textbox">
 				<p>Email</p>
