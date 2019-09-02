@@ -33,7 +33,7 @@
 		<form action="employee" method="post">
 			<div class="textbox">
 				<p>ID</p>
-				<input type="text" name="id" readonly value=${employee.id}>
+				<input type="number" name="id" readonly value=${employee.id}>
 			</div>
 			<div class="textbox">
 				<p>Job</p>
@@ -41,23 +41,23 @@
 			</div>
 			<div class="textbox">
 				<p>Firstname</p>
-				<input class="edit" type="text" name="fname" disabled value=${employee.fname} >
+				<input class="edit" type="text" name="fname" disabled value=${employee.fname} required>
 			</div>
 			<div class="textbox">
 				<p>Lastname</p>
-				<input class="edit" type="text" name="lname" disabled value=${employee.lname} >
+				<input class="edit" type="text" name="lname" disabled value=${employee.lname} required>
 			</div>
 			<div class="textbox">
 				<p>Email</p>
-				<input class="edit" type="text" name="email" disabled value=${employee.email}>
+				<input class="edit" type="email" name="email" disabled value=${employee.email} required>
 			</div>
 			<div class="textbox">
 				<p>Phone number</p>
-				<input class="edit" type="text" name="phone" disabled value=${employee.phone} >
+				<input class="edit" type="text" name="phone" disabled value=${employee.phone} required>
 			</div>
 			<div class="textbox">
 				<p>Salary</p>
-				<input type="text" name="salary" disabled value=${employee.salary} >
+				<input type="number" name="salary" disabled value=${employee.salary} >
 			</div>
 			<div>
 				<input class="btnleft" type="button" value="Edit" onclick="btn1()">

@@ -6,32 +6,53 @@
 	<meta charset="utf-8">
 	<title>Admin Page</title>
 	<link rel="stylesheet" href="CSS/styleadmin.css">
+	<script>
+		function btn1(){
+			 var edits = document.getElementsByClassName("edit"); 
+			    for (var i = 0; i < edits.length; i++) {  
+			        edits[i].removeAttribute("readonly");
+				}
+			 document.getElementsByClassName("jobinfo")[0].style.display = "none";
+			 document.getElementsByClassName("btnright")[0].style.display = "inline";
+			 document.getElementsByClassName("select")[0].style.display = "inline";
+		}
+		function btn2(){
+			document.getElementsByClassName("jobinfo")[0].style.display = "inline";
+			document.getElementsByClassName("btnright")[0].style.display = "none";
+			document.getElementsByClassName("select")[0].style.display = "none";
+		}
+	</script>
 </head>
 <body>
 	<div class="content">
 	<h1>Employee Infomation</h1>
 	<c:forEach var = "i" items = "${employeeData}">
     	<div class="box">
-		<form>
+		<form action="employee" method="post">
 			<div class="textbox">
 				<p>ID</p>
-				<input type="text" name="id" disabled value=${i.id}>
+				<input class="edit" type="number" name="id" readonly value=${i.id} required>
 			</div>
 			<div class="textbox">
 				<p>Job</p>
-				<input type="text" name="job" disabled value=${i.jobName} >
+				<input class="jobinfo" type="text" name="job" disabled value=${i.jobName} >
+				<select class="select" required>
+					<option value=${jobs.key}>A</option>
+					<option value=${jobs.key}>B</option>
+					<option value=${jobs.key}>C</option>
+				</select>
 			</div>
 			<div class="textbox">
 				<p>Firstname</p>
-				<input type="text" name="fName" disabled value=${i.fname} >
+				<input type="text" name="fname" disabled value=${i.fname} >
 			</div>
 			<div class="textbox">
 				<p>Lastname</p>
-				<input type="text" name="lName" disabled value=${i.lname} >
+				<input type="text" name="lname" disabled value=${i.lname} >
 			</div>
 			<div class="textbox">
 				<p>Email</p>
-				<input type="text" name="email" disabled value=${i.email}>
+				<input type="email" name="email" disabled value=${i.email}>
 			</div>
 			<div class="textbox">
 				<p>Phone number</p>
@@ -39,10 +60,11 @@
 			</div>
 			<div class="textbox">
 				<p>Salary</p>
-				<input type="text" name="salary" disabled value=${i.salary} >
+				<input type="number" name="salary" disabled value=${i.salary} >
 			</div>
 			<div>
-				<input class="btn" type="button" value="Edit">
+				<input class="btnleft" type="button" value="Edit" onclick="btn1()">
+				<input class="btnright" type="submit" value="Confirm" onclick="btn2()">
 			</div>
 		</form>
 	</div>

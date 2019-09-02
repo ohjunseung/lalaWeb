@@ -42,7 +42,17 @@ body{
 	float: left;
 	margin: 10px 50px;
 }
-.btn {
+.textbox select {
+	border: none;
+	outline: none;
+	background:none;
+	color: white;
+	font-size: 16px;
+	width: 200px;
+	float: left;
+	margin: 10px 50px;
+}
+.btnleft {
 	width: 30%;
 	background: #2f3640;
 	border: 2px solid #4caf50;
@@ -52,7 +62,20 @@ body{
 	margin: 10px 20px;
 	float: left;
 }
-
+.select{
+	display: none;
+}
+.btnright {
+	display: none;
+	width: 30%;
+	background: #2f3640;
+	border: 2px solid #4caf50;
+	color: white;
+	padding: 5px ;
+	cursor: pointer;
+	margin: 10px 20px;
+	float: right;
+}
 .content{
 	text-align: center;
 	font-size: 20px;
