@@ -6,34 +6,32 @@
 	<meta charset="utf-8">
 	<title>Admin Page</title>
 	<link rel="stylesheet" href="CSS/styleadmin.css">
-	<script>
-		function btn1(){
-			 var edits = document.getElementsByClassName("edit"); 
-			    for (var i = 0; i < edits.length; i++) {  
-			        edits[i].removeAttribute("readonly");
-			        edits[i].removeAttribute("disabled");
-				}
-			 document.getElementsByClassName("btnright")[0].style.display = "inline";
-			
-		}
-		function btn2(){
-			document.getElementsByClassName("btnright")[0].style.display = "none";
-		}
-	</script>
 </head>
 <body>
 	<div class="content">
 	<h1>Employee Infomation</h1>
-	<c:forEach var = "i" items = "${employeeData}">
+	<c:forEach var = "i" items = "${employeeData}" varStatus="loop">
+		<script>
+		function btn1${loop.index}(){
+			 var edits = document.getElementsByClassName("edit${loop.index}"); 
+			    for (var i = 0; i < edits.length; i++) {  
+			        edits[i].removeAttribute("readonly");
+			        edits[i].removeAttribute("disabled");
+				}
+			document.getElementById("btnright${loop.index}").style.display = "inline";
+			
+		}
+	
+		</script>
     	<div class="box">
 		<form action="admin" method="post">
 			<div class="textbox">
 				<p>ID</p>
-				<input class="edit" type="number" name="id" readonly value=${i.id} required>
+				<input class="edit${loop.index}" type="number" name="id" readonly value=${i.id} required>
 			</div>
 			<div class="textbox">
 				<p>Job</p>
-				<select id="job" class="edit" disabled required name="job">
+				<select id="job" class="edit${loop.index}" disabled required name="job">
 					<c:forEach var = "a" items = "${jobs}">
 						<option value=${a.key}>${a.value}</option>
 					</c:forEach>
@@ -63,8 +61,8 @@
 				<input type="number" name="salary" disabled value=${i.salary} >
 			</div>
 			<div>
-				<input class="btnleft" type="button" value="Edit" onclick="btn1()">
-				<input class="btnright" type="submit" value="Confirm" onclick="btn2()">
+				<input class="btnleft" type="button" value="Edit" onclick="btn1${loop.index}()">
+				<input id="btnright${loop.index}" class="btnright" type="submit" value="Confirm" onclick="btn2${loop.index}()">
 			</div>
 		</form>
 	</div>
