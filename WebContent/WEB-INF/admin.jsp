@@ -11,15 +11,13 @@
 			 var edits = document.getElementsByClassName("edit"); 
 			    for (var i = 0; i < edits.length; i++) {  
 			        edits[i].removeAttribute("readonly");
+			        edits[i].removeAttribute("disabled");
 				}
-			 document.getElementsByClassName("jobinfo")[0].style.display = "none";
 			 document.getElementsByClassName("btnright")[0].style.display = "inline";
-			 document.getElementsByClassName("select")[0].style.display = "inline";
+			
 		}
 		function btn2(){
-			document.getElementsByClassName("jobinfo")[0].style.display = "inline";
 			document.getElementsByClassName("btnright")[0].style.display = "none";
-			document.getElementsByClassName("select")[0].style.display = "none";
 		}
 	</script>
 </head>
@@ -28,17 +26,21 @@
 	<h1>Employee Infomation</h1>
 	<c:forEach var = "i" items = "${employeeData}">
     	<div class="box">
-		<form action="employee" method="post">
+		<form action="admin" method="post">
 			<div class="textbox">
 				<p>ID</p>
 				<input class="edit" type="number" name="id" readonly value=${i.id} required>
 			</div>
 			<div class="textbox">
 				<p>Job</p>
-				<input class="jobinfo" type="text" name="job" disabled value=${i.jobName} >
-				<select class="select" required>
-					<option value=${jobs.key}>${jobs.value}</option>
+				<select id="job" class="edit" disabled required name="job">
+					<c:forEach var = "a" items = "${jobs}">
+						<option value=${a.key}>${a.value}</option>
+					</c:forEach>
 				</select>
+				<script>
+					document.getElementById("job").value = "${i.jobCode}";		
+				</script>
 			</div>
 			<div class="textbox">
 				<p>Firstname</p>
