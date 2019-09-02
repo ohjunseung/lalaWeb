@@ -41,10 +41,10 @@ public class EmployeeServlet extends HttpServlet {
             employee.setLname(req.getParameter("lname"));
             employee.setEmail(req.getParameter("email"));
             employee.setPhone(req.getParameter("phone"));
-            User newUser = new User(req.getParameter("email"),user.getPass());
-            DButil.editUser(user,newUser);
+            User newUser = new User(employee.getEmail(), user.getPass());
+            DButil.editUser(user, newUser);
             DButil.editInformation(employee);
-            employee = DButil.getInformation(user);
+            employee = DButil.getInformation(newUser);
             session.setAttribute("employee", employee);
             session.setAttribute("user", newUser);
             req.getRequestDispatcher("/WEB-INF/employee.jsp").forward(req, resp);

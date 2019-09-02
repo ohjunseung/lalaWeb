@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 public class DButil {
     private static BasicDataSource ds;
@@ -113,18 +114,33 @@ public class DButil {
         return tmp;
     }
 
-    private static HashMap<String, Job> getJobs(Connection conn) throws SQLException {
+    private static HashMap<String, Job> getJobs(Connection conn, boolean codeAsKey) throws SQLException {
         HashMap<String, Job> jobs = new HashMap<>();
         try (PreparedStatement psJob = conn.prepareStatement("SELECT Job_code,Job_name,Job_salary " +
                 "FROM employee NATURAL JOIN jobs;")) {
             try (ResultSet rs = psJob.executeQuery()) {
                 while (rs.next()) {
                     Job job = new Job(rs.getString(1), rs.getString(2), rs.getDouble(3));
-                    jobs.put(job.getCode(), job);
+                    if (codeAsKey)
+                        jobs.put(job.getCode(), job);
+                    else jobs.put(job.getName(), job);
                 }
             }
         }
         return jobs;
+    }
+
+    public static HashMap<String,String> getJobs() {
+        HashMap<String,String> jobsPair = new HashMap<>();
+        try (Connection conn = ds.getConnection()) {
+            HashMap<String,Job> jobs = getJobs(conn,true);
+            jobs.forEach((K,V) -> {
+                jobsPair.put(K,V.getName());
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return jobsPair;
     }
 
     public static Employee getInformation(User user) {
@@ -132,7 +148,7 @@ public class DButil {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT ID, Firstname, Lastname, Email, Phone, Job_code " +
                      "FROM employee WHERE employee.Email = ?")) {
-            HashMap<String, Job> jobs = getJobs(conn);
+            HashMap<String, Job> jobs = getJobs(conn, true);
             ps.setString(1, user.getEmail());
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -156,12 +172,11 @@ public class DButil {
     public static void editInformation(Employee employee) {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("UPDATE employee SET Firstname = ? ,Lastname = ? ," +
-                     "Email = ? ,Phone = ? WHERE ID = ?")) {
+                     "Phone = ? WHERE ID = ?")) {
             ps.setString(1, employee.getFname());
             ps.setString(2, employee.getLname());
-            ps.setString(3, employee.getEmail());
-            ps.setString(4, employee.getPhone());
-            ps.setInt(5, employee.getId());
+            ps.setString(3, employee.getPhone());
+            ps.setInt(4, employee.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -172,10 +187,11 @@ public class DButil {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("UPDATE user SET Email = ?, Pass = ? " +
                      "WHERE Email = ? AND Pass = ?")) {
-            ps.setString(1, oldUser.getEmail());
-            ps.setString(2, hashSHA256(oldUser.getPass()));
-            ps.setString(3, newUser.getEmail());
-            ps.setString(4, hashSHA256(newUser.getPass()));
+            ps.setString(1, newUser.getEmail());
+            ps.setString(2, hashSHA256(newUser.getPass()));
+            ps.setString(3, oldUser.getEmail());
+            ps.setString(4, hashSHA256(oldUser.getPass()));
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -186,7 +202,7 @@ public class DButil {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT ID, Firstname, Lastname, Email, Phone, Job_code" +
                      " FROM employee")) {
-            HashMap<String, Job> jobs = getJobs(conn);
+            HashMap<String, Job> jobs = getJobs(conn, true);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Employee employee = new Employee();
@@ -205,6 +221,31 @@ public class DButil {
             e.printStackTrace();
         }
         return employees;
+    }
+
+    public static void editEmployee(Employee employee) {
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement("UPDATE employee SET ID = ? WHERE ID = ?")) {
+            ps.setInt(1, employee.getId());
+            ps.setInt(2, employee.getId());
+            ps.executeUpdate();
+            editJob(employee);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void editJob(Employee employee) {
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement("UPDATE employee SET Job_code = ? WHERE ID = ?")) {
+            HashMap<String, Job> jobs = getJobs(conn,false);
+            Job temp = jobs.get(employee.getJobName());
+            ps.setString(1,temp.getCode());
+            ps.setInt(2, employee.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private static String hashSHA256(String msg) {
