@@ -2,7 +2,7 @@ package lalaWeb;
 
 import model.Employee;
 import model.User;
-import util.DButil;
+import util.DBUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,9 +19,9 @@ public class AdminServlet extends HttpServlet {
         HttpSession session = req.getSession();
         try {
             User user = (User) session.getAttribute("user");
-            if (DButil.checkAdmin(user)) {
-                session.setAttribute("employeeData", DButil.getEmployees());
-                session.setAttribute("jobs", DButil.getJobs());
+            if (DBUtil.checkAdmin(user)) {
+                session.setAttribute("employeeData", DBUtil.getEmployees());
+                session.setAttribute("jobs", DBUtil.getJobs());
                 req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {
@@ -34,13 +34,13 @@ public class AdminServlet extends HttpServlet {
         HttpSession session = req.getSession();
         try {
             User user = (User) session.getAttribute("user");
-            if (DButil.checkAdmin(user)) {
+            if (DBUtil.checkAdmin(user)) {
                 Employee employee = new Employee();
                 employee.setId(Integer.parseInt(req.getParameter("id")));
-                employee.setPhone(req.getParameter("jobName"));
-                DButil.editEmployee(employee);
-                session.setAttribute("employeeData", DButil.getEmployees());
-                session.setAttribute("jobs", DButil.getJobs());
+                employee.setJobCode(req.getParameter("job"));
+                DBUtil.editEmployee(employee);
+                session.setAttribute("employeeData", DBUtil.getEmployees());
+                session.setAttribute("jobs", DBUtil.getJobs());
                 req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {

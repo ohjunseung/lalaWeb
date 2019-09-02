@@ -1,7 +1,7 @@
 package lalaWeb;
 
 import model.User;
-import util.DButil;
+import util.DBUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +25,7 @@ public class Login extends HttpServlet {
             User user = new User(req.getParameter("email"), req.getParameter("pass"));
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
-            switch (DButil.checkUser(user)) {
+            switch (DBUtil.checkUser(user)) {
                 case 1:
                     resp.sendRedirect(getServletContext().getContextPath() + "/employee");
                     break;

@@ -2,7 +2,7 @@ package lalaWeb;
 
 import model.Employee;
 import model.User;
-import util.DButil;
+import util.DBUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,10 +18,10 @@ public class EmployeeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
-        if (user == null || DButil.checkAdmin(user))
+        if (user == null || DBUtil.checkAdmin(user))
             resp.sendRedirect(getServletContext().getContextPath() + "/login");
         else {
-            Employee employee = DButil.getInformation(user);
+            Employee employee = DBUtil.getInformation(user);
             session.setAttribute("employee", employee);
             req.getRequestDispatcher("/WEB-INF/employee.jsp").forward(req, resp);
         }
@@ -32,7 +32,7 @@ public class EmployeeServlet extends HttpServlet {
         //TODO Belum selesai cung!
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
-        if (user == null || DButil.checkAdmin(user))
+        if (user == null || DBUtil.checkAdmin(user))
             resp.sendRedirect(getServletContext().getContextPath() + "/login");
         else {
             Employee employee = new Employee();
@@ -42,9 +42,9 @@ public class EmployeeServlet extends HttpServlet {
             employee.setEmail(req.getParameter("email"));
             employee.setPhone(req.getParameter("phone"));
             User newUser = new User(employee.getEmail(), user.getPass());
-            DButil.editUser(user, newUser);
-            DButil.editInformation(employee);
-            employee = DButil.getInformation(newUser);
+            DBUtil.editUser(user, newUser);
+            DBUtil.editInformation(employee);
+            employee = DBUtil.getInformation(newUser);
             session.setAttribute("employee", employee);
             session.setAttribute("user", newUser);
             req.getRequestDispatcher("/WEB-INF/employee.jsp").forward(req, resp);

@@ -11,9 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.stream.Stream;
 
-public class DButil {
+public class DBUtil {
     private static BasicDataSource ds;
 
     static {
