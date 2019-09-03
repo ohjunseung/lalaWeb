@@ -10,13 +10,15 @@
 <body>
 	<div class="content">
 	<h1>Employee Information</h1>
-	<a href="?action=add">Add User</a>
+		<div class="hyperlink-box">
+			<a href="?action=add">Add Employee</a>
+			<a href="?">Add Job</a>
+		</div>
 	<c:forEach var = "i" items = "${employeeData}" varStatus="loop">
 		<script>
 		function btn1${loop.index}(){
 			 var edits = document.getElementsByClassName("edit${loop.index}"); 
-			    for (var i = 0; i < edits.length; i++) {  
-			        edits[i].removeAttribute("readonly");
+			    for (var i = 0; i < edits.length; i++) {
 			        edits[i].removeAttribute("disabled");
 				}
 			document.getElementById("btnright${loop.index}").style.display = "inline";
@@ -26,7 +28,7 @@
 		<form action="admin" method="post">
 			<div class="textbox">
 				<p>ID</p>
-				<input class="edit${loop.index}" type="number" name="id" readonly value=${i.id} required>
+				<input class="edit${loop.index}" type="text" name="id" readonly value=${i.id} required>
 			</div>
 			<div class="textbox">
 				<p>Job</p>

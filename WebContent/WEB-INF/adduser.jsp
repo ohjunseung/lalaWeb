@@ -24,6 +24,9 @@
 	</script>
 </head>
 <body>
+  <div class="content">
+	<h1>Employee Information</h1>
+	<h4>Please fill the form below</h4>
 	<div class="box">
 		<form action="admin?action=add" method="post">
 			<div class="textbox">
@@ -48,15 +51,15 @@
 			</div>
 			<div class="textbox">
 				<p>Password</p>
-            	<input id="pw" type="password" name="pass" min="8" max="32" required>
+            	<input id="pw" type="password" name="pass" minlength="8" maxlength="32" required>
         	</div>
 			<div class="textbox">
 				<p>Confirm Password</p>
-            	<input id="cpw" type="password" min="8" max="32" required>
+            	<input id="cpw" type="password" minlength="8" maxlength="32" required>
         	</div>
 			<div class="textbox">
 				<p>Phone number</p>
-				<input class="edit" type="text" name="phone" min="10" max="16" required>
+				<input class="edit" type="text" name="phone" minlength="10" maxlength="16" required>
 			</div>
 			<div class="error" id="error"></div>
 			<div>
@@ -65,5 +68,6 @@
 			</div>
 		</form>
 	</div>
+  </div>
 </body>
 </html>
