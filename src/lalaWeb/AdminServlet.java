@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+//TODO Belum mari tambahin add action
 @WebServlet("/admin")
 public class AdminServlet extends HttpServlet {
     @Override
@@ -20,9 +21,16 @@ public class AdminServlet extends HttpServlet {
         try {
             User user = (User) session.getAttribute("user");
             if (DBUtil.checkAdmin(user)) {
-                session.setAttribute("employeeData", DBUtil.getEmployees());
-                session.setAttribute("jobs", DBUtil.getJobs());
-                req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
+                String action = req.getParameter("action");
+                if (action == null) {
+                    session.setAttribute("employeeData", DBUtil.getEmployees());
+                    session.setAttribute("jobs", DBUtil.getJobs());
+                    req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
+                }
+                if (action.equals("add")) {
+                    session.setAttribute("jobs", DBUtil.getJobs());
+                    req.getRequestDispatcher("/WEB-INF/").forward(req, resp);
+                }
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {
             resp.sendRedirect(getServletContext().getContextPath() + "/login");
@@ -35,10 +43,25 @@ public class AdminServlet extends HttpServlet {
         try {
             User user = (User) session.getAttribute("user");
             if (DBUtil.checkAdmin(user)) {
-                Employee employee = new Employee();
-                employee.setId(Integer.parseInt(req.getParameter("id")));
-                employee.setJobCode(req.getParameter("job"));
-                DBUtil.editEmployee(employee);
+                String action = req.getParameter("action");
+                if (action == null) {
+                    Employee employee = new Employee();
+                    employee.setId(Integer.parseInt(req.getParameter("id")));
+                    employee.setJobCode(req.getParameter("job"));
+                    DBUtil.editEmployee(employee);
+                }
+                if (action.equals("add")) {
+                    Employee employee = new Employee();
+                    employee.setFname(req.getParameter("fname"));
+                    employee.setLname(req.getParameter("lname"));
+                    employee.setPhone(req.getParameter("phone"));
+                    employee.setEmail(req.getParameter("Email"));
+                    employee.setJobCode(req.getParameter("jobCode"));
+                    if (DBUtil.insertEmployee(employee)) {
+                        resp.sendRedirect(getServletContext().getContextPath() + "/admin?action=add&amp;incorrect=true");
+                    }
+                }
+
                 session.setAttribute("employeeData", DBUtil.getEmployees());
                 session.setAttribute("jobs", DBUtil.getJobs());
                 req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
