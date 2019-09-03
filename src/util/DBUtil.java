@@ -31,8 +31,12 @@ public class DBUtil {
         try (PreparedStatement ps = conn.prepareStatement("SELECT user.Email FROM user LEFT JOIN employee " +
                 "ON user.Email = employee.Email WHERE employee.ID IS NULL")) {
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next())
-                    tmp = admin.equals(rs.getString(1));
+                while (rs.next()) {
+                    if(admin.equals(rs.getString(1))) {
+                        tmp = true;
+                        break;
+                    }
+                }
             }
         }
         return tmp;
