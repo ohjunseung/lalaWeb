@@ -2,17 +2,18 @@
 	font-family: cursive;
 }
 body{
-	margin: 0;
-	padding: 0;
 	font-family: "Montserrat";
 	background-color: lightblue;
 	background-size: cover;
 }
-
+body a{
+	
+}
 .box{
 	max-width: 600px;
 	color: white;
-	margin: 100px 50px;
+	margin-left: auto;
+	margin-right: auto;
 	background-color: rgba(105,105,105,0.7);
 	border-radius: 20px;
 }
