@@ -16,16 +16,14 @@ public class DBUtil {
     private static BasicDataSource ds;
 
     static {
-        if (ds == null) {
-            ds = new BasicDataSource();
-            ds.setUrl("jdbc:mysql://localhost:3306/eis");
-            ds.setUsername("root");
-            ds.setPassword("toor");
+        ds = new BasicDataSource();
+        ds.setUrl("jdbc:mysql://localhost:3306/eis");
+        ds.setUsername("root");
+        ds.setPassword("toor");
 
-            ds.setMinIdle(5);
-            ds.setMaxIdle(10);
-            ds.setMaxOpenPreparedStatements(100);
-        }
+        ds.setMinIdle(5);
+        ds.setMaxIdle(10);
+        ds.setMaxOpenPreparedStatements(100);
     }
 
     private static boolean checkAdmin(String admin, Connection conn) throws SQLException {
@@ -60,9 +58,7 @@ public class DBUtil {
             ps.setString(1, user.getEmail());
             ps.setString(2, hashSHA256(user.getPass()));
             try (ResultSet rs = ps.executeQuery()) {
-                if (!rs.next()) {
-                    tmp = 0;
-                } else if (checkAdmin(rs.getString(1), conn))
+                if (rs.next()) if (checkAdmin(rs.getString(1), conn))
                     tmp = 2;
                 else tmp = 1;
             }
@@ -95,12 +91,12 @@ public class DBUtil {
         boolean tmp = false;
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO " +
-                     "employee(Job_code,Firstname,Lastname,Email,Phone) VALUES(?,?,?,?,?)")) {
-            ps.setString(1, employee.getJobName());
-            ps.setString(2, employee.getFname());
-            ps.setString(3, employee.getLname());
-            ps.setString(4, employee.getEmail());
-            ps.setString(5, employee.getPhone());
+                     "employee(Firstname, Lastname, Email, Phone,Job_code) VALUES(?,?,?,?,?)")) {
+            ps.setString(1, employee.getFname());
+            ps.setString(2, employee.getLname());
+            ps.setString(3, employee.getEmail());
+            ps.setString(4, employee.getPhone());
+            ps.setString(5, employee.getJobCode());
             tmp = true;
         } catch (SQLException e) {
             String state = e.getSQLState();
@@ -131,9 +127,7 @@ public class DBUtil {
         HashMap<String, String> jobsPair = new HashMap<>();
         try (Connection conn = ds.getConnection()) {
             HashMap<String, Job> jobs = getJobs(conn);
-            jobs.forEach((K, V) -> {
-                jobsPair.put(K, V.getName());
-            });
+            jobs.forEach((K, V) -> jobsPair.put(K, V.getName()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -145,7 +139,6 @@ public class DBUtil {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT ID, Firstname, Lastname, Email, Phone, Job_code, " +
                      "Job_name,Job_salary FROM employee NATURAL JOIN jobs WHERE employee.Email = ?")) {
-            HashMap<String, Job> jobs = getJobs(conn);
             ps.setString(1, user.getEmail());
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -199,7 +192,6 @@ public class DBUtil {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT ID, Firstname, Lastname, Email, Phone, Job_code, " +
                      "Job_name,Job_salary FROM employee NATURAL JOIN jobs;")) {
-            HashMap<String, Job> jobs = getJobs(conn);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Employee employee = new Employee();
@@ -236,12 +228,11 @@ public class DBUtil {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] digested = md.digest(msg.getBytes());
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < digested.length; i++)
-                hexString.append(Integer.toString((digested[i] & 0xff) + 0x100, 16).substring(1));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : digested) hexString.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
