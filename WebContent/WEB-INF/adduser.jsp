@@ -56,7 +56,7 @@
         	</div>
 			<div class="textbox">
 				<p>Phone number</p>
-				<input class="edit" type="text" name="phone" min="10" max="16"required>
+				<input class="edit" type="text" name="phone" min="10" max="16" required>
 			</div>
 			<div class="error" id="error"></div>
 			<div>

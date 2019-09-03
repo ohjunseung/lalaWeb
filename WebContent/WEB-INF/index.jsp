@@ -15,7 +15,7 @@
 			<a href="${pageContext.request.contextPath}/aboutus">About</a>
 		</div>
 	</div>
-	<div>
+	<div class="content">
 		<a href="login">Login</a>
 	</div>
 </body>

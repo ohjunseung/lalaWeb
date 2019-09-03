@@ -10,6 +10,7 @@ body{
 .box{
 	max-width: 600px;
 	color: white;
+	margin-top: 100px;
 	margin-left: auto;
 	margin-right: auto;
 	background-color: rgba(105,105,105,0.7);
@@ -91,6 +92,12 @@ body{
 }
 .menu a:hover{
 	color: #6ab04c;
+}
+.content a{
+	width: 500px;
+	height: 500px;
+	margin-left: auto;
+	margin-right: auto;
 }
 .content p{
 	padding: 20px;
