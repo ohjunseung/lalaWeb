@@ -91,12 +91,13 @@ public class DBUtil {
         boolean tmp = false;
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO " +
-                     "employee(Firstname, Lastname, Email, Phone,Job_code) VALUES(?,?,?,?,?)")) {
+                     "employee(Firstname, Lastname, Email, Phone, Job_code) VALUES(?,?,?,?,?)")) {
             ps.setString(1, employee.getFname());
             ps.setString(2, employee.getLname());
             ps.setString(3, employee.getEmail());
             ps.setString(4, employee.getPhone());
             ps.setString(5, employee.getJobCode());
+            ps.executeUpdate();
             tmp = true;
         } catch (SQLException e) {
             String state = e.getSQLState();

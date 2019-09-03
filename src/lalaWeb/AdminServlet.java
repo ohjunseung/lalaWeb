@@ -58,7 +58,7 @@ public class AdminServlet extends HttpServlet {
                     employee.setLname(req.getParameter("lname"));
                     employee.setPhone(req.getParameter("phone"));
                     employee.setEmail(req.getParameter("email"));
-                    employee.setJobCode(req.getParameter("jobCode"));
+                    employee.setJobCode(req.getParameter("job"));
                     User insertUser = new User(employee.getEmail(), req.getParameter("pass"));
                     if (DBUtil.register(insertUser)) {
                         DBUtil.insertEmployee(employee);
@@ -66,7 +66,7 @@ public class AdminServlet extends HttpServlet {
                         session.setAttribute("jobs", DBUtil.getJobs());
                         req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
                     } else
-                        resp.sendRedirect(getServletContext().getContextPath() + "/admin?action=add&amp;incorrect=true");
+                        resp.sendRedirect(getServletContext().getContextPath() + "/admin?action=add&incorrect=true");
                 }
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {
