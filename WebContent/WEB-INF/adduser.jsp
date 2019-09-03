@@ -15,17 +15,17 @@
 				document.getElementById('error').textContent = "Employee is already exist!";
 		}
 	 	function checkpw(){
-	 		if (document.getElementById('pw') != document.getElementById('cpw')){
-	 			document.getElementById('error').textContent = "Password doesn't match!";
-	 		}else{
+	 		if (document.getElementById('pw').value === document.getElementById('cpw').value){
 	 			document.getElementById('submit').click();
+	 		}else{
+	 			document.getElementById('error').textContent = "Password doesn't match!";
 	 		}
 	 	}
 	</script>
 </head>
 <body>
 	<div class="box">
-		<form action="admin" method="post">
+		<form action="admin?action=add" method="post">
 			<div class="textbox">
 				<p>Job</p>
 				<select id="job" name="job" required>
