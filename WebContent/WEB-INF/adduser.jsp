@@ -1,47 +1,67 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="ISO-8859-1">
 	<title>Add user</title>
 	<link rel="stylesheet" href="CSS/styleadmin.css">
+	<script>
+	 	window.onload = () => {
+			const urlSearchParams = new URLSearchParams(window.location.search);
+			const param = urlSearchParams.get('incorrect');
+			if (param === 'true')
+				document.getElementById('error').textContent = "Employee is already exist!";
+		}
+	 	function checkpw(){
+	 		if (document.getElementById('pw') != document.getElementById('cpw')){
+	 			document.getElementById('error').textContent = "Password doesn't match!";
+	 		}else{
+	 			document.getElementById('submit').click();
+	 		}
+	 	}
+	</script>
 </head>
 <body>
 	<div class="box">
-		<form action="employee" method="post">
-			<div class="textbox">
-				<p>ID</p>
-				<input type="number" name="id">
-			</div>
+		<form action="admin" method="post">
 			<div class="textbox">
 				<p>Job</p>
-				<input type="text" name="job" >
+				<select id="job" name="job" required>
+					<c:forEach var = "a" items = "${jobs}">
+						<option value=${a.key}>${a.value}</option>
+					</c:forEach>
+				</select>
 			</div>
 			<div class="textbox">
 				<p>Firstname</p>
-				<input class="edit" type="text" name="fname" required>
+				<input type="text" name="fname" required>
 			</div>
 			<div class="textbox">
 				<p>Lastname</p>
-				<input class="edit" type="text" name="lname" required>
+				<input type="text" name="lname" required>
 			</div>
 			<div class="textbox">
 				<p>Email</p>
-				<input class="edit" type="email" name="email" required>
+				<input type="email" name="email" required>
 			</div>
 			<div class="textbox">
-            	<input type="password" placeholder="Password" name="pass">
+				<p>Password</p>
+            	<input id="pw" type="password" name="pass" required>
         	</div>
 			<div class="textbox">
-            	<input type="password" placeholder="Confirm Password" name="cpass">
+				<p>Confirm Password</p>
+            	<input id="cpw" type="password" required>
         	</div>
 			<div class="textbox">
 				<p>Phone number</p>
 				<input class="edit" type="text" name="phone" required>
 			</div>
+			<div class="error" id="error"></div>
 			<div>
-				<input class="btnleft" type="submit" value="Confirm">
+				<input class="btnleft" value="Confirm" type="button" onclick="checkpw()">
+				<button id="submit" style="display:none" type="submit"></button>
 			</div>
 		</form>
 	</div>

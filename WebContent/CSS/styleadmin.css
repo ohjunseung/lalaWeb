@@ -56,6 +56,14 @@ body a{
 .textbox option{
 	color: black;
 }
+.error{
+	width: 90%;
+	overflow: hidden;
+	font-size: 16px;
+	padding: 8px 10px;
+	margin: 8px 20px;
+	color: darkred;
+}
 .btnleft {
 	width: 30%;
 	background: #2f3640;

@@ -10,7 +10,7 @@
 <body>
 	<div class="content">
 	<h1>Employee Information</h1>
-	<a href="?action=adduser">Add User</a>
+	<a href="?action=add">Add User</a>
 	<c:forEach var = "i" items = "${employeeData}" varStatus="loop">
 		<script>
 		function btn1${loop.index}(){
