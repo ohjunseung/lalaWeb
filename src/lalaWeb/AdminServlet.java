@@ -29,7 +29,7 @@ public class AdminServlet extends HttpServlet {
                 }
                 if (action.equals("add")) {
                     session.setAttribute("jobs", DBUtil.getJobs());
-                    req.getRequestDispatcher("/WEB-INF/").forward(req, resp);
+                    req.getRequestDispatcher("/WEB-INF/adduser.jsp").forward(req, resp);
                 }
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {
@@ -55,11 +55,13 @@ public class AdminServlet extends HttpServlet {
                     employee.setFname(req.getParameter("fname"));
                     employee.setLname(req.getParameter("lname"));
                     employee.setPhone(req.getParameter("phone"));
-                    employee.setEmail(req.getParameter("Email"));
+                    employee.setEmail(req.getParameter("email"));
                     employee.setJobCode(req.getParameter("jobCode"));
-                    if (DBUtil.insertEmployee(employee)) {
+                    User insertUser = new User(employee.getEmail(), req.getParameter("pass"));
+                    if (DBUtil.register(insertUser))
+                        DBUtil.insertEmployee(employee);
+                    else
                         resp.sendRedirect(getServletContext().getContextPath() + "/admin?action=add&amp;incorrect=true");
-                    }
                 }
 
                 session.setAttribute("employeeData", DBUtil.getEmployees());
