@@ -22,12 +22,12 @@ public class AdminServlet extends HttpServlet {
             if (DBUtil.checkAdmin(user)) {
                 String action = req.getParameter("action");
                 if (action == null) {
-                    session.setAttribute("employeeData", DBUtil.getEmployees());
-                    session.setAttribute("jobs", DBUtil.getJobs());
+                    req.setAttribute("employeeData", DBUtil.getEmployees());
+                    req.setAttribute("jobs", DBUtil.getJobs());
                     req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
                 }
                 if (action.equals("add")) {
-                    session.setAttribute("jobs", DBUtil.getJobs());
+                    req.setAttribute("jobs", DBUtil.getJobs());
                     req.getRequestDispatcher("/WEB-INF/adduser.jsp").forward(req, resp);
                 }
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
@@ -48,8 +48,8 @@ public class AdminServlet extends HttpServlet {
                     employee.setId(Integer.parseInt(req.getParameter("id")));
                     employee.setJobCode(req.getParameter("job"));
                     DBUtil.editEmployee(employee);
-                    session.setAttribute("employeeData", DBUtil.getEmployees());
-                    session.setAttribute("jobs", DBUtil.getJobs());
+                    req.setAttribute("employeeData", DBUtil.getEmployees());
+                    req.setAttribute("jobs", DBUtil.getJobs());
                     req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
                 }
                 if (action.equals("add")) {
@@ -62,8 +62,8 @@ public class AdminServlet extends HttpServlet {
                     User insertUser = new User(employee.getEmail(), req.getParameter("pass"));
                     if (DBUtil.register(insertUser)) {
                         DBUtil.insertEmployee(employee);
-                        session.setAttribute("employeeData", DBUtil.getEmployees());
-                        session.setAttribute("jobs", DBUtil.getJobs());
+                        req.setAttribute("employeeData", DBUtil.getEmployees());
+                        req.setAttribute("jobs", DBUtil.getJobs());
                         req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
                     } else
                         resp.sendRedirect(getServletContext().getContextPath() + "/admin?action=add&incorrect=true");

@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class DBUtil {
@@ -26,13 +27,26 @@ public class DBUtil {
         ds.setMaxOpenPreparedStatements(100);
     }
 
+    private static String hashSHA256(String msg) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] digested = md.digest(msg.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : digested) hexString.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private static boolean checkAdmin(String admin, Connection conn) throws SQLException {
         boolean tmp = false;
         try (PreparedStatement ps = conn.prepareStatement("SELECT user.Email FROM user LEFT JOIN employee " +
                 "ON user.Email = employee.Email WHERE employee.ID IS NULL")) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    if(admin.equals(rs.getString(1))) {
+                    if (admin.equals(rs.getString(1))) {
                         tmp = true;
                         break;
                     }
@@ -91,28 +105,20 @@ public class DBUtil {
         return tmp;
     }
 
-    public static boolean insertEmployee(Employee employee) {
-        boolean tmp = false;
+    public static void editUser(User oldUser, User newUser) {
         try (Connection conn = ds.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO " +
-                     "employee(Firstname, Lastname, Email, Phone, Job_code) VALUES(?,?,?,?,?)")) {
-            ps.setString(1, employee.getFname());
-            ps.setString(2, employee.getLname());
-            ps.setString(3, employee.getEmail());
-            ps.setString(4, employee.getPhone());
-            ps.setString(5, employee.getJobCode());
+             PreparedStatement ps = conn.prepareStatement("UPDATE user SET Email = ?, Pass = ? " +
+                     "WHERE Email = ? AND Pass = ?")) {
+            ps.setString(1, newUser.getEmail());
+            ps.setString(2, hashSHA256(newUser.getPass()));
+            ps.setString(3, oldUser.getEmail());
+            ps.setString(4, hashSHA256(oldUser.getPass()));
             ps.executeUpdate();
-            tmp = true;
         } catch (SQLException e) {
-            String state = e.getSQLState();
-            if (state.equals("21S01")) // Null inserted
-                tmp = false;
-            else if (state.equals("23000")) // Duplicate Value
-                tmp = false;
-            else e.printStackTrace();
+            e.printStackTrace();
         }
-        return tmp;
     }
+
 
     private static HashMap<String, Job> getJobs(Connection conn) throws SQLException {
         HashMap<String, Job> jobs = new HashMap<>();
@@ -137,6 +143,50 @@ public class DBUtil {
             e.printStackTrace();
         }
         return jobsPair;
+    }
+
+    public static Collection<Job> getAllJobs() {
+        try (Connection conn = ds.getConnection()) {
+            HashMap<String, Job> jobs = getJobs(conn);
+            return jobs.values();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean addJob(Job job) {
+        boolean tmp = false;
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO jobs(Job_code, Job_name, Job_salary)" +
+                     " VALUES(?,?)")) {
+            ps.setString(1, job.getCode());
+            ps.setString(2, hashSHA256(job.getName()));
+            ps.setDouble(3, job.getSalary());
+            ps.executeUpdate();
+            tmp = true;
+        } catch (SQLException e) {
+            String state = e.getSQLState();
+            if (state.equals("21S01")) // Null inserted
+                tmp = false;
+            else if (state.equals("23000")) // Duplicate Value
+                tmp = false;
+            else e.printStackTrace();
+        }
+        return tmp;
+    }
+
+    public static void editJob(Job job, String jobCode) {
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement("UPDATE jobs SET Job_code,Job_name,Job_salary WHERE Job_code = ?")) {
+            ps.setString(1, job.getCode());
+            ps.setString(2, job.getName());
+            ps.setDouble(3, job.getSalary());
+            ps.setString(4, jobCode);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static Employee getInformation(User user) {
@@ -178,25 +228,34 @@ public class DBUtil {
         }
     }
 
-    public static void editUser(User oldUser, User newUser) {
+    public static boolean insertEmployee(Employee employee) {
+        boolean tmp = false;
         try (Connection conn = ds.getConnection();
-             PreparedStatement ps = conn.prepareStatement("UPDATE user SET Email = ?, Pass = ? " +
-                     "WHERE Email = ? AND Pass = ?")) {
-            ps.setString(1, newUser.getEmail());
-            ps.setString(2, hashSHA256(newUser.getPass()));
-            ps.setString(3, oldUser.getEmail());
-            ps.setString(4, hashSHA256(oldUser.getPass()));
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO " +
+                     "employee(Firstname, Lastname, Email, Phone, Job_code) VALUES(?,?,?,?,?)")) {
+            ps.setString(1, employee.getFname());
+            ps.setString(2, employee.getLname());
+            ps.setString(3, employee.getEmail());
+            ps.setString(4, employee.getPhone());
+            ps.setString(5, employee.getJobCode());
             ps.executeUpdate();
+            tmp = true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            String state = e.getSQLState();
+            if (state.equals("21S01")) // Null inserted
+                tmp = false;
+            else if (state.equals("23000")) // Duplicate Value
+                tmp = false;
+            else e.printStackTrace();
         }
+        return tmp;
     }
 
     public static ArrayList<Employee> getEmployees() {
         ArrayList<Employee> employees = new ArrayList<>();
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT ID, Firstname, Lastname, Email, Phone, Job_code, " +
-                     "Job_name,Job_salary FROM employee NATURAL JOIN jobs;")) {
+                     "Job_name,Job_salary FROM employee NATURAL JOIN jobs ORDER BY ID;")) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Employee employee = new Employee();
@@ -229,16 +288,4 @@ public class DBUtil {
         }
     }
 
-    private static String hashSHA256(String msg) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] digested = md.digest(msg.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : digested) hexString.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

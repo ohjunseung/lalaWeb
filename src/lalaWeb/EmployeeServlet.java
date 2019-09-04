@@ -22,7 +22,7 @@ public class EmployeeServlet extends HttpServlet {
             resp.sendRedirect(getServletContext().getContextPath() + "/login");
         else {
             Employee employee = DBUtil.getInformation(user);
-            session.setAttribute("employee", employee);
+            req.setAttribute("employee", employee);
             req.getRequestDispatcher("/WEB-INF/employee.jsp").forward(req, resp);
         }
     }
@@ -44,7 +44,7 @@ public class EmployeeServlet extends HttpServlet {
             DBUtil.editUser(user, newUser);
             DBUtil.editInformation(employee);
             employee = DBUtil.getInformation(newUser);
-            session.setAttribute("employee", employee);
+            req.setAttribute("employee", employee);
             session.setAttribute("user", newUser);
             req.getRequestDispatcher("/WEB-INF/employee.jsp").forward(req, resp);
         }
