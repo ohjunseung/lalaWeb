@@ -28,7 +28,7 @@
 	<h1>Employee Information</h1>
 	<h4>Please fill the form below</h4>
 	<div class="box">
-		<form action="admin?action=add" method="post">
+		<form action="user?action=add" method="post">
 			<div class="textbox">
 				<p>Job</p>
 				<select id="job" name="job" required>
