@@ -145,10 +145,12 @@ public class DBUtil {
         return jobsPair;
     }
 
-    public static Collection<Job> getAllJobs() {
+    public static ArrayList<Job> getAllJobs() {
         try (Connection conn = ds.getConnection()) {
             HashMap<String, Job> jobs = getJobs(conn);
-            return jobs.values();
+            ArrayList<Job> jobList = new ArrayList<>();
+            jobList.addAll(jobs.values());
+            return jobList;
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -5,5 +5,7 @@ Simple JavaMVC Webpage for small semester project
 - JSTL tags lib
 
 [X]Database
-[]Servlet
-[]View Page
+[X]Servlet
+[X]View Page
+
+Note: First repo on github. Be gentle with us :)

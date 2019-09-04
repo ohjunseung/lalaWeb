@@ -1,6 +1,5 @@
 package lalaWeb;
 
-import model.Job;
 import model.User;
 import util.DBUtil;
 
