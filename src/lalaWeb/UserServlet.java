@@ -21,7 +21,7 @@ public class UserServlet extends HttpServlet {
             if (DBUtil.checkAdmin(user)) {
                 String action = req.getParameter("action");
                 if (action.equals("add")) {
-                    req.getRequestDispatcher("/WEB-INF/adduser.jsp").forward(req, resp);
+                    req.getRequestDispatcher("/WEB-INF/addadmin.jsp").forward(req, resp);
                 }
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {
