@@ -29,15 +29,15 @@
 		<form action="admin" method="post">
 			<div class="textbox">
 				<p>Job Code</p>
-				<input type="text" name="jobCode" value=${i.jobCode} disabled>
+				<input type="text" name="jobCode" value=${i.code} disabled>
 			</div>
 			<div class="textbox">
 				<p>Job Name</p>
-            	<input type="text" name="jobName" value=${i.jobName} disabled>
+            	<input type="text" name="jobName" value=${i.name} disabled>
         	</div>
 			<div class="textbox">
 				<p>Job Salary</p>
-            	<input type="number" name="jobSalary" step="0.01" value=${i.jobSalary} disabled>
+            	<input type="number" name="jobSalary" step="0.01" value=${i.salary} disabled>
         	</div>
 			<div>
 				<input class="btnleft" type="button" value="Edit" onclick="btn1${loop.index}()">
