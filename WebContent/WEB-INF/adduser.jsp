@@ -28,7 +28,7 @@
 	<h1>Employee Information</h1>
 	<h4>Please fill the form below</h4>
 	<div class="box">
-		<form action="admin?action=add" method="post">
+		<form action="user?action=add" method="post">
 			<div class="textbox">
 				<p>Job</p>
 				<select id="job" name="job" required>
@@ -59,7 +59,8 @@
         	</div>
 			<div class="textbox">
 				<p>Phone number</p>
-				<input class="edit" type="text" name="phone" minlength="10" maxlength="16" required>
+				<input class="edit" type="tel" name="phone" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required>
+				<h7>Format: 139-2525-4324</h7>
 			</div>
 			<div class="error" id="error"></div>
 			<div>

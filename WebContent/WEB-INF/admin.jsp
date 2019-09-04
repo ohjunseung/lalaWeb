@@ -12,7 +12,8 @@
 	<h1>Employee Information</h1>
 		<div class="hyperlink-box">
 			<a href="?action=add">Add Employee</a>
-			<a href="?">Add Job</a>
+			<a href="job?action=add">Add Job</a>
+			<a href="user?action=add">Add Admin</a>
 		</div>
 	<c:forEach var = "i" items = "${employeeData}" varStatus="loop">
 		<script>
