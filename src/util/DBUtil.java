@@ -159,7 +159,7 @@ public class DBUtil {
         boolean tmp = false;
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO jobs(Job_code, Job_name, Job_salary)" +
-                     " VALUES(?,?)")) {
+                     " VALUES(?,?,?)")) {
             ps.setString(1, job.getCode());
             ps.setString(2, hashSHA256(job.getName()));
             ps.setDouble(3, job.getSalary());
