@@ -26,18 +26,19 @@
 		}
 		</script>
     	<div class="box">
-		<form action="admin" method="post">
+		<form action="job" method="post">
 			<div class="textbox">
 				<p>Job Code</p>
-				<input type="text" name="jobCode" value=${i.code} disabled>
+				<input class="edit${loop.index}" type="text" name="jobCode" value=${i.code} disabled required>
+				<input type="hidden" name="oldCode" value=${i.code} disabled>
 			</div>
 			<div class="textbox">
 				<p>Job Name</p>
-            	<input type="text" name="jobName" value=${i.name} disabled>
+            	<input class="edit${loop.index}" type="text" name="jobName" value=${i.name} disabled required>
         	</div>
 			<div class="textbox">
 				<p>Job Salary</p>
-            	<input type="number" name="jobSalary" step="0.01" value=${i.salary} disabled>
+            	<input class="edit${loop.index}" type="number" name="jobSalary" step="0.01" value=${i.salary} disabled required>
         	</div>
 			<div>
 				<input class="btnleft" type="button" value="Edit" onclick="btn1${loop.index}()">
