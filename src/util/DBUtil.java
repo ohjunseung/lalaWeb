@@ -123,7 +123,7 @@ public class DBUtil {
     private static HashMap<String, Job> getJobs(Connection conn) throws SQLException {
         HashMap<String, Job> jobs = new HashMap<>();
         try (PreparedStatement psJob = conn.prepareStatement("SELECT Job_code,Job_name,Job_salary " +
-                "FROM jobs;")) {
+                "FROM jobs")) {
             try (ResultSet rs = psJob.executeQuery()) {
                 while (rs.next()) {
                     Job job = new Job(rs.getString(1), rs.getString(2), rs.getDouble(3));
@@ -155,11 +155,11 @@ public class DBUtil {
         return null;
     }
 
-    public static boolean addJob(Job job) {
+    public static boolean insertJob(Job job) {
         boolean tmp = false;
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO jobs(Job_code, Job_name, Job_salary)" +
-                     " VALUES(?,?)")) {
+                     " VALUES(?,?,?)")) {
             ps.setString(1, job.getCode());
             ps.setString(2, hashSHA256(job.getName()));
             ps.setDouble(3, job.getSalary());
@@ -178,7 +178,8 @@ public class DBUtil {
 
     public static void editJob(Job job, String jobCode) {
         try (Connection conn = ds.getConnection();
-             PreparedStatement ps = conn.prepareStatement("UPDATE jobs SET Job_code,Job_name,Job_salary WHERE Job_code = ?")) {
+             PreparedStatement ps = conn.prepareStatement("UPDATE jobs SET Job_code = ?,Job_name = ? ,Job_salary = ?" +
+                     " WHERE Job_code = ?")) {
             ps.setString(1, job.getCode());
             ps.setString(2, job.getName());
             ps.setDouble(3, job.getSalary());
@@ -255,7 +256,7 @@ public class DBUtil {
         ArrayList<Employee> employees = new ArrayList<>();
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT ID, Firstname, Lastname, Email, Phone, Job_code, " +
-                     "Job_name,Job_salary FROM employee NATURAL JOIN jobs ORDER BY ID;")) {
+                     "Job_name,Job_salary FROM employee NATURAL JOIN jobs ORDER BY ID")) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Employee employee = new Employee();

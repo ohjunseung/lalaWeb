@@ -42,18 +42,19 @@ public class JobServlet extends HttpServlet {
             if (DBUtil.checkAdmin(user)) {
                 String action = req.getParameter("action");
                 if (action == null) {
-                    Job job = new Job(req.getParameter("jobCode"),req.getParameter("jobName"),
+                    Job job = new Job(req.getParameter("jobCode"), req.getParameter("jobName"),
                             Double.parseDouble(req.getParameter("jobSalary")));
-
-                    DBUtil.editJob(job,job);
+                    DBUtil.editJob(job, req.getParameter("oldCode"));
                     req.setAttribute("jobs", DBUtil.getAllJobs());
                     req.getRequestDispatcher("/WEB-INF/editjobs.jsp").forward(req, resp);
                 }
                 if (action.equals("add")) {
-                    Job job = new Job(req.getParameter("jobCode"),req.getParameter("jobName"),
+                    Job job = new Job(req.getParameter("jobCode"), req.getParameter("jobName"),
                             Double.parseDouble(req.getParameter("jobSalary")));
-                    req.setAttribute("jobs", DBUtil.getJobs());
-                    req.getRequestDispatcher("/WEB-INF/editjobs.jsp").forward(req, resp);
+                    if (DBUtil.insertJob(job)) {
+                        req.setAttribute("jobs", DBUtil.getJobs());
+                        req.getRequestDispatcher("/WEB-INF/editjobs.jsp").forward(req, resp);
+                    } else resp.sendRedirect(getServletContext().getContextPath() + "/job?action=add&incorrect=true");
                 }
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {
