@@ -14,7 +14,7 @@
 </head>
 <body>
 	<div class="content">
-	<h1>Admin Information</h1>
+	<h1>Job Information</h1>
 	<h4>Please fill the form below</h4>
 	<div class="box">
 		<form action="job?action=add" method="post">
@@ -32,8 +32,7 @@
         	</div>
 			<div class="error" id="error"></div>
 			<div>
-				<input class="btnleft" value="Confirm" type="button">
-				<button id="submit" style="display:none" type="submit"></button>
+				<input class="btnleft" value="Confirm" type="submit">
 			</div>
 		</form>
 	</div>
