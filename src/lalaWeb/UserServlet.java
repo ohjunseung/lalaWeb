@@ -21,15 +21,16 @@ public class UserServlet extends HttpServlet {
         try {
             User user = (User) session.getAttribute("user");
             if (DBUtil.checkAdmin(user)) {
-                String action = req.getParameter("action");
-                if (action == null) {
+                try {
+                    String action = req.getParameter("action");
+                    if (action.equals("add")) {
+                        redirect = false;
+                        url = "/WEB-INF/addadmin.jsp";
+                    } else url = "/admin";
+                } catch (NullPointerException e) {
                     redirect = false;
                     url = "/WEB-INF/editpass.jsp";
                 }
-                if (action.equals("add")) {
-                    redirect = false;
-                    url = "/WEB-INF/addadmin.jsp";
-                } else throw new NullPointerException();
             } else url = "/login";
         } catch (NullPointerException e) {
             url = "/admin";

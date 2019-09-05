@@ -22,18 +22,19 @@ public class AdminServlet extends HttpServlet {
         try {
             User user = (User) session.getAttribute("user");
             if (DBUtil.checkAdmin(user)) {
-                String action = req.getParameter("action");
-                if (action == null) {
+                try {
+                    String action = req.getParameter("action");
+                    if (action.equals("add")) {
+                        req.setAttribute("jobs", DBUtil.getJobs());
+                        redirect = false;
+                        url = "/WEB-INF/adduser.jsp";
+                    } else url = "/login";
+                } catch (NullPointerException e) {
                     req.setAttribute("employeeData", DBUtil.getEmployees());
                     req.setAttribute("jobs", DBUtil.getJobs());
                     redirect = false;
                     url = "/WEB-INF/admin.jsp";
                 }
-                if (action.equals("add")) {
-                    req.setAttribute("jobs", DBUtil.getJobs());
-                    redirect = false;
-                    url = "/WEB-INF/adduser.jsp";
-                } else throw new NullPointerException();
             } else url = "/login";
         } catch (NullPointerException e) {
             url = "/login";
@@ -84,6 +85,5 @@ public class AdminServlet extends HttpServlet {
             url = "/login";
         }
         resp.sendRedirect(getServletContext().getContextPath() + url);
-        ;
     }
 }
