@@ -45,21 +45,24 @@ public class JobServlet extends HttpServlet {
                     Job job = new Job(req.getParameter("jobCode"), req.getParameter("jobName"),
                             Double.parseDouble(req.getParameter("jobSalary")));
                     DBUtil.editJob(job, req.getParameter("oldCode"));
-                    req.setAttribute("jobs", DBUtil.getAllJobs());
-                    req.getRequestDispatcher("/WEB-INF/jobs.jsp").forward(req, resp);
+                    resp.sendRedirect(getServletContext().getContextPath() + "/job");
+                    /*req.setAttribute("jobs", DBUtil.getAllJobs());
+                    req.getRequestDispatcher("/WEB-INF/jobs.jsp").forward(req, resp);*/
                 }
                 if (action.equals("add")) {
                     Job job = new Job(req.getParameter("jobCode"), req.getParameter("jobName"),
                             Double.parseDouble(req.getParameter("jobSalary")));
                     if (DBUtil.insertJob(job)) {
-                        req.setAttribute("jobs", DBUtil.getAllJobs());
-                        req.getRequestDispatcher("/WEB-INF/jobs.jsp").forward(req, resp);
+                        resp.sendRedirect(getServletContext().getContextPath() + "/job");
+                        /*req.setAttribute("jobs", DBUtil.getAllJobs());
+                        req.getRequestDispatcher("/WEB-INF/jobs.jsp").forward(req, resp);*/
                     } else resp.sendRedirect(getServletContext().getContextPath() + "/job?action=add&incorrect=true");
                 }
                 if (action.equals("delete")) {
+                    resp.sendRedirect(getServletContext().getContextPath() + "/job");
                     DBUtil.deleteJob(req.getParameter("jobCode"));
-                    req.setAttribute("jobs", DBUtil.getAllJobs());
-                    req.getRequestDispatcher("/WEB-INF/jobs.jsp").forward(req, resp);
+                    /*req.setAttribute("jobs", DBUtil.getAllJobs());
+                    req.getRequestDispatcher("/WEB-INF/jobs.jsp").forward(req, resp);*/
                 }
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {
