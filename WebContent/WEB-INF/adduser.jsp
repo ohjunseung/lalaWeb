@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta charset="ISO-8859-1">
-	<title>Add user</title>
+	<title>Add Employee</title>
 	<link rel="stylesheet" href="CSS/styleadmin.css">
 	<script>
 	 	window.onload = () => {

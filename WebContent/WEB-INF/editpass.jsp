@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Edit Admin Info</title>
+    <title>Edit Password</title>
     <link rel="stylesheet" href="CSS/styleadmin.css">
     <script>
     function checkpw(){
@@ -15,7 +15,7 @@
 </head>
 <body>
   <div class="content">
-	<h1>Edit Admin</h1>
+	<h1>Edit Password</h1>
 	<div class="box">
 		<form action="user" method="post">
 			<div class="textbox">

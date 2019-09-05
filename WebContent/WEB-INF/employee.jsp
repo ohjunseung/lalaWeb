@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Index</title>
+	<title>Employee Information</title>
 	<link rel="stylesheet" href="CSS/styleindex.css">
 	<script>
 		function btn1(){
@@ -18,7 +18,7 @@
 </head>
 <body>
 	<div class="navbar">
-		<h2 id="Name">Company Name</h2>
+		<h2 id="Name">OG.Inc</h2>
 		<div class="menu">
 			<a href="${pageContext.request.contextPath}">Home</a>
 			<a href="${pageContext.request.contextPath}/desc">Description</a>
