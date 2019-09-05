@@ -20,23 +20,25 @@ public class Login extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String url;
         try {
             User user = new User(req.getParameter("email"), req.getParameter("pass"));
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
             switch (DBUtil.checkUser(user)) {
                 case 1:
-                    resp.sendRedirect(getServletContext().getContextPath() + "/employee");
+                    url = "/employee";
                     break;
                 case 2:
-                    resp.sendRedirect(getServletContext().getContextPath() + "/admin");
+                    url = "/admin";
                     break;
                 default:
                     throw new NullPointerException();
             }
         } catch (NullPointerException e) {
-            resp.sendRedirect(getServletContext().getContextPath() + "/login?incorrect=true");
+            url = "/login?incorrect=true";
         }
+        resp.sendRedirect(getServletContext().getContextPath() + url);
     }
 }

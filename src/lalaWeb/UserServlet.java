@@ -15,44 +15,53 @@ import java.io.IOException;
 public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        boolean redirect = true;
+        String url;
         HttpSession session = req.getSession();
         try {
             User user = (User) session.getAttribute("user");
             if (DBUtil.checkAdmin(user)) {
                 String action = req.getParameter("action");
                 if (action == null) {
-                	req.getRequestDispatcher("/WEB-INF/editpass.jsp").forward(req, resp);
+                    redirect = false;
+                    url = "/WEB-INF/editpass.jsp";
                 }
                 if (action.equals("add")) {
-                    req.getRequestDispatcher("/WEB-INF/addadmin.jsp").forward(req, resp);
+                    redirect = false;
+                    url = "/WEB-INF/addadmin.jsp";
                 } else throw new NullPointerException();
-            } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
+            } else url = "/login";
         } catch (NullPointerException e) {
-            resp.sendRedirect(getServletContext().getContextPath() + "/admin");
+            url = "/admin";
         }
+        if (redirect)
+            resp.sendRedirect(url);
+        else req.getRequestDispatcher(url).forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
+        String url = "";
         try {
             User user = (User) session.getAttribute("user");
             if (DBUtil.checkAdmin(user)) {
                 String action = req.getParameter("action");
                 if (action == null) {
-                    User newUser = new User(req.getParameter("email"),req.getParameter("pass"));
-                    DBUtil.editUser(user,newUser);
-                    resp.sendRedirect(getServletContext().getContextPath() + "/login");
+                    User newUser = new User(req.getParameter("email"), req.getParameter("pass"));
+                    DBUtil.editUser(user, newUser);
+                    url = "/login";
                 }
                 if (action.equals("add")) {
-                    User newUser = new User(req.getParameter("email"),req.getParameter("pass"));
-                    if (DBUtil.register(newUser)) {
-                        resp.sendRedirect(getServletContext().getContextPath() + "/admin");
-                    } else resp.sendRedirect(getServletContext().getContextPath() + "/user?action=add&incorrect=true");
+                    User newUser = new User(req.getParameter("email"), req.getParameter("pass"));
+                    if (DBUtil.register(newUser))
+                        url = "/admin";
+                    else url = "/user?action=add&incorrect=true";
                 }
-            } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
+            } else url = "/login";
         } catch (NullPointerException e) {
-            resp.sendRedirect(getServletContext().getContextPath() + "/login");
+            url = "/login";
         }
+        resp.sendRedirect(getServletContext().getContextPath() + url);
     }
 }

@@ -20,7 +20,7 @@
 		<form action="user" method="post">
 			<div class="textbox">
 				<p>New Email</p>
-				<input type="email" name="email" required>
+				<input type="email" name="email" placeholder="${user.email}" required>
 			</div>
 			<div class="textbox">
 				<p>New Password</p>

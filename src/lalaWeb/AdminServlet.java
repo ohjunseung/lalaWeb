@@ -16,6 +16,8 @@ import java.io.IOException;
 public class AdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        boolean redirect = true;
+        String url;
         HttpSession session = req.getSession();
         try {
             User user = (User) session.getAttribute("user");
@@ -24,20 +26,26 @@ public class AdminServlet extends HttpServlet {
                 if (action == null) {
                     req.setAttribute("employeeData", DBUtil.getEmployees());
                     req.setAttribute("jobs", DBUtil.getJobs());
-                    req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
+                    redirect = false;
+                    url = "/WEB-INF/admin.jsp";
                 }
                 if (action.equals("add")) {
                     req.setAttribute("jobs", DBUtil.getJobs());
-                    req.getRequestDispatcher("/WEB-INF/adduser.jsp").forward(req, resp);
+                    redirect = false;
+                    url = "/WEB-INF/adduser.jsp";
                 } else throw new NullPointerException();
-            } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
+            } else url = "/login";
         } catch (NullPointerException e) {
-            resp.sendRedirect(getServletContext().getContextPath() + "/login");
+            url = "/login";
         }
+        if (redirect)
+            resp.sendRedirect(url);
+        else req.getRequestDispatcher(url).forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String url = "";
         HttpSession session = req.getSession();
         try {
             User user = (User) session.getAttribute("user");
@@ -47,11 +55,8 @@ public class AdminServlet extends HttpServlet {
                     Employee employee = new Employee();
                     employee.setId(Integer.parseInt(req.getParameter("id")));
                     employee.setJobCode(req.getParameter("job"));
-                    DBUtil.editEmployee(employee,Integer.parseInt(req.getParameter("oldID")));
-                    resp.sendRedirect(getServletContext().getContextPath() + "/admin");
-/*                    req.setAttribute("employeeData", DBUtil.getEmployees());
-                    req.setAttribute("jobs", DBUtil.getJobs());
-                    req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);*/
+                    DBUtil.editEmployee(employee, Integer.parseInt(req.getParameter("oldID")));
+                    url = "/admin";
                 }
                 if (action.equals("add")) {
                     Employee employee = new Employee();
@@ -63,26 +68,21 @@ public class AdminServlet extends HttpServlet {
                     User insertUser = new User(employee.getEmail(), req.getParameter("pass"));
                     if (DBUtil.register(insertUser)) {
                         DBUtil.insertEmployee(employee);
-                        resp.sendRedirect(getServletContext().getContextPath() + "/admin");
-/*                        req.setAttribute("employeeData", DBUtil.getEmployees());
-                        req.setAttribute("jobs", DBUtil.getJobs());
-                        req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);*/
+                        url = "/admin";
                     } else
-                        resp.sendRedirect(getServletContext().getContextPath() + "/admin?action=add&incorrect=true");
+                        url = "/admin?action=add&incorrect=true";
                 }
                 if (action.equals("delete")) {
                     Employee employee = new Employee();
                     employee.setId(Integer.parseInt(req.getParameter("id")));
                     employee.setEmail(req.getParameter("email"));
                     DBUtil.deleteEmployee(employee);
-                    resp.sendRedirect(getServletContext().getContextPath() + "/admin");
-/*                    req.setAttribute("employeeData", DBUtil.getEmployees());
-                    req.setAttribute("jobs", DBUtil.getJobs());
-                    req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);*/
+                    url = "/admin";
                 }
-            } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
+            } else url = "/login";
         } catch (NullPointerException e) {
-            resp.sendRedirect(getServletContext().getContextPath() + "/login");
+            url = "/login";
         }
+        resp.sendRedirect(url);
     }
 }
