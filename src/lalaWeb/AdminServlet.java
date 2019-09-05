@@ -47,7 +47,7 @@ public class AdminServlet extends HttpServlet {
                     Employee employee = new Employee();
                     employee.setId(Integer.parseInt(req.getParameter("id")));
                     employee.setJobCode(req.getParameter("job"));
-                    DBUtil.editEmployee(employee);
+                    DBUtil.editEmployee(employee,Integer.parseInt(req.getParameter("oldID")));
                     req.setAttribute("employeeData", DBUtil.getEmployees());
                     req.setAttribute("jobs", DBUtil.getJobs());
                     req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
