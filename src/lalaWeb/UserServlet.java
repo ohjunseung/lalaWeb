@@ -25,7 +25,7 @@ public class UserServlet extends HttpServlet {
                 }
                 if (action.equals("add")) {
                     req.getRequestDispatcher("/WEB-INF/addadmin.jsp").forward(req, resp);
-                }
+                } else throw new NullPointerException();
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {
             resp.sendRedirect(getServletContext().getContextPath() + "/admin");
