@@ -48,9 +48,10 @@ public class AdminServlet extends HttpServlet {
                     employee.setId(Integer.parseInt(req.getParameter("id")));
                     employee.setJobCode(req.getParameter("job"));
                     DBUtil.editEmployee(employee,Integer.parseInt(req.getParameter("oldID")));
-                    req.setAttribute("employeeData", DBUtil.getEmployees());
+                    resp.sendRedirect(getServletContext().getContextPath() + "/admin");
+/*                    req.setAttribute("employeeData", DBUtil.getEmployees());
                     req.setAttribute("jobs", DBUtil.getJobs());
-                    req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
+                    req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);*/
                 }
                 if (action.equals("add")) {
                     Employee employee = new Employee();
@@ -62,9 +63,10 @@ public class AdminServlet extends HttpServlet {
                     User insertUser = new User(employee.getEmail(), req.getParameter("pass"));
                     if (DBUtil.register(insertUser)) {
                         DBUtil.insertEmployee(employee);
-                        req.setAttribute("employeeData", DBUtil.getEmployees());
+                        resp.sendRedirect(getServletContext().getContextPath() + "/admin");
+/*                        req.setAttribute("employeeData", DBUtil.getEmployees());
                         req.setAttribute("jobs", DBUtil.getJobs());
-                        req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
+                        req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);*/
                     } else
                         resp.sendRedirect(getServletContext().getContextPath() + "/admin?action=add&incorrect=true");
                 }
@@ -73,9 +75,10 @@ public class AdminServlet extends HttpServlet {
                     employee.setId(Integer.parseInt(req.getParameter("id")));
                     employee.setEmail(req.getParameter("email"));
                     DBUtil.deleteEmployee(employee);
-                    req.setAttribute("employeeData", DBUtil.getEmployees());
+                    resp.sendRedirect(getServletContext().getContextPath() + "/admin");
+/*                    req.setAttribute("employeeData", DBUtil.getEmployees());
                     req.setAttribute("jobs", DBUtil.getJobs());
-                    req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
+                    req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);*/
                 }
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {
