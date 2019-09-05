@@ -50,7 +50,7 @@ public class EmployeeServlet extends HttpServlet {
                 DBUtil.editUser(user, newUser);
                 DBUtil.editInformation(employee);
                 session.setAttribute("user", newUser);
-                url = "/employee.jsp";
+                url = "/employee";
             } else url = "/login";
         } catch (NullPointerException e) {
             url = "/login";
