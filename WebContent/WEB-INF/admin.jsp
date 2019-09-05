@@ -36,6 +36,7 @@
 			<div class="textbox">
 				<p>ID</p>
 				<input class="edit${loop.index}" type="text" name="id" readonly value=${i.id} required>
+				<input type="hidden" name="oldID" value=${i.id} readonly>
 			</div>
 			<div class="textbox">
 				<p>Job</p>
