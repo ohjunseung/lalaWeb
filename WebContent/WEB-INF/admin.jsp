@@ -13,6 +13,7 @@
 		<div class="hyperlink-box">
 			<a href="?action=add">Add Employee</a>
 			<a href="job">Job List</a>
+			<a href="user">Edit Password</a>
 			<a href="user?action=add">Add Admin</a>
 		</div>
 	<c:forEach var = "i" items = "${employeeData}" varStatus="loop">
@@ -23,6 +24,11 @@
 			        edits[i].removeAttribute("disabled");
 				}
 			document.getElementById("btnright${loop.index}").style.display = "inline";
+			document.getElementById("btndelete${loop.index}").style.display = "inline";
+		}
+		function btndel${loop.index}(){
+			document.getElementById("delete${loop.index}").removeAttribute("disabled");
+			document.getElementById("btnright${loop.index}").click();
 		}
 		</script>
     	<div class="box">
@@ -64,6 +70,8 @@
 			</div>
 			<div>
 				<input class="btnleft" type="button" value="Edit" onclick="btn1${loop.index}()">
+				<input id="delete${loop.index}" type="hidden" disabled value="delete" name="action">
+				<button id="btndelete${loop.index}" style="display: none" onclick="btndel${loop.index}()">Delete</button>
 				<input id="btnright${loop.index}" class="btnright" type="submit" value="Confirm">
 			</div>
 		</form>

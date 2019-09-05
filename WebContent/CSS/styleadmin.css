@@ -31,9 +31,10 @@ body{
 	border-bottom: 2px solid black;
 	background: #2f3640;
 }
-.textbox h7{
-	width: 100px;
-	font-size: 10px;
+#format-text{
+	width: 150px;
+	font-size: 14px;
+	display: none;
 }
 .textbox p{
 	width: 26px;

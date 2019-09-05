@@ -60,7 +60,7 @@
 			<div class="textbox">
 				<p>Phone number</p>
 				<input class="edit" type="tel" name="phone" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required>
-				<h7>Format: 139-2525-4324</h7>
+				<p id="format-text">Format: 139-2525-4324</p>
 			</div>
 			<div class="error" id="error"></div>
 			<div>

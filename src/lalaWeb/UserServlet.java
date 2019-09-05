@@ -20,6 +20,9 @@ public class UserServlet extends HttpServlet {
             User user = (User) session.getAttribute("user");
             if (DBUtil.checkAdmin(user)) {
                 String action = req.getParameter("action");
+                if (action == null) {
+                	req.getRequestDispatcher("/WEB-INF/editpass.jsp").forward(req, resp);
+                }
                 if (action.equals("add")) {
                     req.getRequestDispatcher("/WEB-INF/addadmin.jsp").forward(req, resp);
                 }

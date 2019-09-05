@@ -12,9 +12,7 @@
 			        edits[i].removeAttribute("disabled");  
 				}
 			 document.getElementsByClassName("btnright")[0].style.display = "inline";
-		}
-		function btn2(){
-			document.getElementByClassName("btnright")[0].style.display = "none";
+			 document.getElementById("format-text").style.display = "inline"
 		}
 	</script>
 </head>
@@ -51,7 +49,8 @@
 			</div>
 			<div class="textbox">
 				<p>Phone number</p>
-				<input class="edit" type="text" name="phone" disabled value=${employee.phone} required>
+				<input class="edit" type="tel" name="phone" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" value=${employee.phone} required>
+				<p id="format-text">Format: 139-2525-4324</p>
 			</div>
 			<div class="textbox">
 				<p>Salary</p>

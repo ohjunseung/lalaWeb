@@ -52,7 +52,7 @@ public class JobServlet extends HttpServlet {
                     Job job = new Job(req.getParameter("jobCode"), req.getParameter("jobName"),
                             Double.parseDouble(req.getParameter("jobSalary")));
                     if (DBUtil.insertJob(job)) {
-                        req.setAttribute("jobs", DBUtil.getJobs());
+                        req.setAttribute("jobs", DBUtil.getAllJobs());
                         req.getRequestDispatcher("/WEB-INF/jobs.jsp").forward(req, resp);
                     } else resp.sendRedirect(getServletContext().getContextPath() + "/job?action=add&incorrect=true");
                 }

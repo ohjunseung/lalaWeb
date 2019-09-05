@@ -30,7 +30,7 @@
 			<div class="textbox">
 				<p>Job Code</p>
 				<input class="edit${loop.index}" type="text" name="jobCode" value=${i.code} disabled required>
-				<input type="hidden" name="oldCode" value=${i.code} disabled>
+				<input type="hidden" name="oldCode" value=${i.code} readonly>
 			</div>
 			<div class="textbox">
 				<p>Job Name</p>

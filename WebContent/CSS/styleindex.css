@@ -25,6 +25,11 @@ body{
 	border-bottom: 2px solid black;
 	background: #2f3640;
 }
+#format-text{
+	width: 150px;
+	font-size: 14px;
+	display: none;
+}
 .textbox p{
 	width: 26px;
 	float: left;
