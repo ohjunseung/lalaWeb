@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 public class DBUtil {
@@ -174,7 +173,7 @@ public class DBUtil {
              PreparedStatement ps = conn.prepareStatement("INSERT INTO jobs(Job_code, Job_name, Job_salary)" +
                      " VALUES(?,?,?)")) {
             ps.setString(1, job.getCode());
-            ps.setString(2, hashSHA256(job.getName()));
+            ps.setString(2, job.getName());
             ps.setDouble(3, job.getSalary());
             ps.executeUpdate();
             tmp = true;

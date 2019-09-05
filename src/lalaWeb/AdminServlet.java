@@ -73,6 +73,9 @@ public class AdminServlet extends HttpServlet {
                     employee.setId(Integer.parseInt(req.getParameter("id")));
                     employee.setEmail(req.getParameter("email"));
                     DBUtil.deleteEmployee(employee);
+                    req.setAttribute("employeeData", DBUtil.getEmployees());
+                    req.setAttribute("jobs", DBUtil.getJobs());
+                    req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
                 }
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {

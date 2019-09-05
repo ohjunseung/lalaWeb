@@ -58,6 +58,8 @@ public class JobServlet extends HttpServlet {
                 }
                 if (action.equals("delete")) {
                     DBUtil.deleteJob(req.getParameter("jobCode"));
+                    req.setAttribute("jobs", DBUtil.getAllJobs());
+                    req.getRequestDispatcher("/WEB-INF/jobs.jsp").forward(req, resp);
                 }
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {
