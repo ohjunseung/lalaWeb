@@ -47,17 +47,18 @@ public class UserServlet extends HttpServlet {
         try {
             User user = (User) session.getAttribute("user");
             if (DBUtil.checkAdmin(user)) {
-                String action = req.getParameter("action");
-                if (action == null) {
+                try {
+                    String action = req.getParameter("action");
+                    if (action.equals("add")) {
+                        User newUser = new User(req.getParameter("email"), req.getParameter("pass"));
+                        if (DBUtil.register(newUser))
+                            url = "/admin";
+                        else url = "/user?action=add&incorrect=true";
+                    }
+                } catch (NullPointerException e) {
                     User newUser = new User(req.getParameter("email"), req.getParameter("pass"));
                     DBUtil.editUser(user, newUser);
                     url = "/login";
-                }
-                if (action.equals("add")) {
-                    User newUser = new User(req.getParameter("email"), req.getParameter("pass"));
-                    if (DBUtil.register(newUser))
-                        url = "/admin";
-                    else url = "/user?action=add&incorrect=true";
                 }
             } else url = "/login";
         } catch (NullPointerException e) {

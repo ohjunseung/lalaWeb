@@ -38,20 +38,22 @@ public class EmployeeServlet extends HttpServlet {
         String url;
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
-        if (user == null || DBUtil.checkAdmin(user))
+        try {
+            if (!DBUtil.checkAdmin(user)) {
+                Employee employee = new Employee();
+                employee.setId(Integer.parseInt(req.getParameter("id")));
+                employee.setFname(req.getParameter("fname"));
+                employee.setLname(req.getParameter("lname"));
+                employee.setEmail(req.getParameter("email"));
+                employee.setPhone(req.getParameter("phone"));
+                User newUser = new User(employee.getEmail(), user.getPass());
+                DBUtil.editUser(user, newUser);
+                DBUtil.editInformation(employee);
+                session.setAttribute("user", newUser);
+                url = "/employee.jsp";
+            } else url = "/login";
+        } catch (NullPointerException e) {
             url = "/login";
-        else {
-            Employee employee = new Employee();
-            employee.setId(Integer.parseInt(req.getParameter("id")));
-            employee.setFname(req.getParameter("fname"));
-            employee.setLname(req.getParameter("lname"));
-            employee.setEmail(req.getParameter("email"));
-            employee.setPhone(req.getParameter("phone"));
-            User newUser = new User(employee.getEmail(), user.getPass());
-            DBUtil.editUser(user, newUser);
-            DBUtil.editInformation(employee);
-            session.setAttribute("user", newUser);
-            url = "employee.jsp";
         }
         resp.sendRedirect(getServletContext().getContextPath() + url);
     }

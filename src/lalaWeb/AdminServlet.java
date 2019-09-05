@@ -51,33 +51,34 @@ public class AdminServlet extends HttpServlet {
         try {
             User user = (User) session.getAttribute("user");
             if (DBUtil.checkAdmin(user)) {
-                String action = req.getParameter("action");
-                if (action == null) {
+                try {
+                    String action = req.getParameter("action");
+                    if (action.equals("add")) {
+                        Employee employee = new Employee();
+                        employee.setFname(req.getParameter("fname"));
+                        employee.setLname(req.getParameter("lname"));
+                        employee.setPhone(req.getParameter("phone"));
+                        employee.setEmail(req.getParameter("email"));
+                        employee.setJobCode(req.getParameter("job"));
+                        User insertUser = new User(employee.getEmail(), req.getParameter("pass"));
+                        if (DBUtil.register(insertUser)) {
+                            DBUtil.insertEmployee(employee);
+                            url = "/admin";
+                        } else
+                            url = "/admin?action=add&incorrect=true";
+                    }
+                    if (action.equals("delete")) {
+                        Employee employee = new Employee();
+                        employee.setId(Integer.parseInt(req.getParameter("id")));
+                        employee.setEmail(req.getParameter("email"));
+                        DBUtil.deleteEmployee(employee);
+                        url = "/admin";
+                    }
+                } catch (NullPointerException e) {
                     Employee employee = new Employee();
                     employee.setId(Integer.parseInt(req.getParameter("id")));
                     employee.setJobCode(req.getParameter("job"));
                     DBUtil.editEmployee(employee, Integer.parseInt(req.getParameter("oldID")));
-                    url = "/admin";
-                }
-                if (action.equals("add")) {
-                    Employee employee = new Employee();
-                    employee.setFname(req.getParameter("fname"));
-                    employee.setLname(req.getParameter("lname"));
-                    employee.setPhone(req.getParameter("phone"));
-                    employee.setEmail(req.getParameter("email"));
-                    employee.setJobCode(req.getParameter("job"));
-                    User insertUser = new User(employee.getEmail(), req.getParameter("pass"));
-                    if (DBUtil.register(insertUser)) {
-                        DBUtil.insertEmployee(employee);
-                        url = "/admin";
-                    } else
-                        url = "/admin?action=add&incorrect=true";
-                }
-                if (action.equals("delete")) {
-                    Employee employee = new Employee();
-                    employee.setId(Integer.parseInt(req.getParameter("id")));
-                    employee.setEmail(req.getParameter("email"));
-                    DBUtil.deleteEmployee(employee);
                     url = "/admin";
                 }
             } else url = "/login";

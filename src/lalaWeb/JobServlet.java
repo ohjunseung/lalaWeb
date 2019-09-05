@@ -22,15 +22,16 @@ public class JobServlet extends HttpServlet {
         try {
             User user = (User) session.getAttribute("user");
             if (DBUtil.checkAdmin(user)) {
-                String action = req.getParameter("action");
-                if (action == null) {
+                try {
+                    String action = req.getParameter("action");
+                    if (action.equals("add")) {
+                        redirect = false;
+                        url = "/WEB-INF/addjobs.jsp";
+                    }
+                } catch (NullPointerException e) {
                     req.setAttribute("jobs", DBUtil.getAllJobs());
                     redirect = false;
                     url = "/WEB-INF/jobs.jsp";
-                }
-                if (action.equals("add")) {
-                    redirect = false;
-                    url = "/WEB-INF/addjobs.jsp";
                 }
             } else url = "/login";
         } catch (NullPointerException e) {
@@ -48,22 +49,23 @@ public class JobServlet extends HttpServlet {
         try {
             User user = (User) session.getAttribute("user");
             if (DBUtil.checkAdmin(user)) {
-                String action = req.getParameter("action");
-                if (action == null) {
+                try {
+                    String action = req.getParameter("action");
+                    if (action.equals("add")) {
+                        Job job = new Job(req.getParameter("jobCode"), req.getParameter("jobName"),
+                                Double.parseDouble(req.getParameter("jobSalary")));
+                        if (DBUtil.insertJob(job))
+                            url = "/job";
+                        else url = "/job?action=add&incorrect=true";
+                    }
+                    if (action.equals("delete")) {
+                        DBUtil.deleteJob(req.getParameter("jobCode"));
+                        url = "/job";
+                    }
+                } catch (NullPointerException e) {
                     Job job = new Job(req.getParameter("jobCode"), req.getParameter("jobName"),
                             Double.parseDouble(req.getParameter("jobSalary")));
                     DBUtil.editJob(job, req.getParameter("oldCode"));
-                    url = "/job";
-                }
-                if (action.equals("add")) {
-                    Job job = new Job(req.getParameter("jobCode"), req.getParameter("jobName"),
-                            Double.parseDouble(req.getParameter("jobSalary")));
-                    if (DBUtil.insertJob(job))
-                        url = "/job";
-                    else url = "/job?action=add&incorrect=true";
-                }
-                if (action.equals("delete")) {
-                    DBUtil.deleteJob(req.getParameter("jobCode"));
                     url = "/job";
                 }
             } else url = "/login";
