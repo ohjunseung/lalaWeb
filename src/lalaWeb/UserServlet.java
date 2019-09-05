@@ -35,7 +35,7 @@ public class UserServlet extends HttpServlet {
             url = "/admin";
         }
         if (redirect)
-            resp.sendRedirect(url);
+            resp.sendRedirect(getServletContext().getContextPath() + url);
         else req.getRequestDispatcher(url).forward(req, resp);
     }
 

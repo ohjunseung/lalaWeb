@@ -37,7 +37,7 @@ public class JobServlet extends HttpServlet {
             url = "/login";
         }
         if (redirect)
-            resp.sendRedirect(url);
+            resp.sendRedirect(getServletContext().getContextPath() + url);
         else req.getRequestDispatcher(url).forward(req, resp);
     }
 
@@ -70,6 +70,6 @@ public class JobServlet extends HttpServlet {
         } catch (NullPointerException e) {
             url = "/login";
         }
-        resp.sendRedirect(url);
+        resp.sendRedirect(getServletContext().getContextPath() + url);
     }
 }

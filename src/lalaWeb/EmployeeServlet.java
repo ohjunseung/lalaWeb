@@ -29,7 +29,7 @@ public class EmployeeServlet extends HttpServlet {
             url = "/WEB-INF/employee.jsp";
         }
         if (redirect)
-            resp.sendRedirect(url);
+            resp.sendRedirect(getServletContext().getContextPath() + url);
         else req.getRequestDispatcher(url).forward(req, resp);
     }
 
@@ -53,6 +53,6 @@ public class EmployeeServlet extends HttpServlet {
             session.setAttribute("user", newUser);
             url = "employee.jsp";
         }
-        resp.sendRedirect(url);
+        resp.sendRedirect(getServletContext().getContextPath() + url);
     }
 }
