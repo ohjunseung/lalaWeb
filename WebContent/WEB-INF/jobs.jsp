@@ -23,6 +23,11 @@
 			        edits[i].removeAttribute("disabled");
 				}
 			document.getElementById("btnright${loop.index}").style.display = "inline";
+			document.getElementById("btndelete${loop.index}").style.display = "inline";
+		}
+		function btndel${loop.index}(){
+			document.getElementById("delete${loop.index}").removeAttribute("disabled");
+			document.getElementById("btnright${loop.index}").click();
 		}
 		</script>
     	<div class="box">
@@ -40,8 +45,10 @@
 				<p>Job Salary</p>
             	<input class="edit${loop.index}" type="number" name="jobSalary" step="0.01" value=${i.salary} disabled required>
         	</div>
-			<div>
+			<div class="button-box">
 				<input class="btnleft" type="button" value="Edit" onclick="btn1${loop.index}()">
+				<input id="delete${loop.index}" type="hidden" disabled value="delete" name="action">
+				<button id="btndelete${loop.index}" class="btndelete" onclick="btndel${loop.index}()">Delete</button>
 				<input id="btnright${loop.index}" class="btnright" type="submit" value="Confirm">
 			</div>
 		</form>

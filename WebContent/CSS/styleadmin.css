@@ -22,6 +22,11 @@ body{
 	flex-flow: row wrap;
   	justify-content: space-around;
 }
+.button-box{
+	display: flex;
+	flex-flow: row wrap;
+  	justify-content: space-around;
+}
 .textbox{
 	width: 90%;
 	overflow: hidden;
@@ -75,28 +80,36 @@ body{
 	color: darkred;
 }
 .btnleft {
-	width: 30%;
+	width: 20%;
 	background: #2f3640;
 	border: 2px solid #4caf50;
 	color: white;
 	padding: 5px ;
 	cursor: pointer;
 	margin: 10px 20px;
-	float: left;
 }
 .select{
 	display: none;
 }
-.btnright {
+.btndelete{
 	display: none;
-	width: 30%;
+	width: 20%;
 	background: #2f3640;
 	border: 2px solid #4caf50;
 	color: white;
 	padding: 5px ;
 	cursor: pointer;
 	margin: 10px 20px;
-	float: right;
+}
+.btnright {
+	display: none;
+	width: 20%;
+	background: #2f3640;
+	border: 2px solid #4caf50;
+	color: white;
+	padding: 5px ;
+	cursor: pointer;
+	margin: 10px 20px;
 }
 .content{
 	text-align: center;

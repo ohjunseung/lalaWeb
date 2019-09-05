@@ -68,10 +68,10 @@
 				<p>Salary</p>
 				<input type="number" name="salary" disabled value=${i.salary} >
 			</div>
-			<div>
+			<div class="button-box">
 				<input class="btnleft" type="button" value="Edit" onclick="btn1${loop.index}()">
 				<input id="delete${loop.index}" type="hidden" disabled value="delete" name="action">
-				<button id="btndelete${loop.index}" style="display: none" onclick="btndel${loop.index}()">Delete</button>
+				<button id="btndelete${loop.index}" class="btndelete" onclick="btndel${loop.index}()">Delete</button>
 				<input id="btnright${loop.index}" class="btnright" type="submit" value="Confirm">
 			</div>
 		</form>
