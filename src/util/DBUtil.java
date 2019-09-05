@@ -158,9 +158,7 @@ public class DBUtil {
     public static ArrayList<Job> getAllJobs() {
         try (Connection conn = ds.getConnection()) {
             HashMap<String, Job> jobs = getJobs(conn);
-            ArrayList<Job> jobList = new ArrayList<>();
-            jobList.addAll(jobs.values());
-            return jobList;
+            return new ArrayList<>(jobs.values());
         } catch (SQLException e) {
             e.printStackTrace();
         }

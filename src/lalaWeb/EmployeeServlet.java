@@ -16,23 +16,30 @@ import java.io.IOException;
 public class EmployeeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        boolean redirect = true;
+        String url;
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
         if (user == null || DBUtil.checkAdmin(user))
-            resp.sendRedirect(getServletContext().getContextPath() + "/login");
+            url = "/login";
         else {
             Employee employee = DBUtil.getInformation(user);
             req.setAttribute("employee", employee);
-            req.getRequestDispatcher("/WEB-INF/employee.jsp").forward(req, resp);
+            redirect = false;
+            url = "/WEB-INF/employee.jsp";
         }
+        if (redirect)
+            resp.sendRedirect(url);
+        else req.getRequestDispatcher(url).forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String url;
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
         if (user == null || DBUtil.checkAdmin(user))
-            resp.sendRedirect(getServletContext().getContextPath() + "/login");
+            url = "/login";
         else {
             Employee employee = new Employee();
             employee.setId(Integer.parseInt(req.getParameter("id")));
@@ -43,10 +50,9 @@ public class EmployeeServlet extends HttpServlet {
             User newUser = new User(employee.getEmail(), user.getPass());
             DBUtil.editUser(user, newUser);
             DBUtil.editInformation(employee);
-            employee = DBUtil.getInformation(newUser);
-            req.setAttribute("employee", employee);
             session.setAttribute("user", newUser);
-            req.getRequestDispatcher("/WEB-INF/employee.jsp").forward(req, resp);
+            url = "employee.jsp";
         }
+        resp.sendRedirect(url);
     }
 }
