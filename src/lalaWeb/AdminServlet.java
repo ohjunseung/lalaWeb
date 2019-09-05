@@ -29,7 +29,7 @@ public class AdminServlet extends HttpServlet {
                 if (action.equals("add")) {
                     req.setAttribute("jobs", DBUtil.getJobs());
                     req.getRequestDispatcher("/WEB-INF/adduser.jsp").forward(req, resp);
-                }
+                } else throw new NullPointerException();
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {
             resp.sendRedirect(getServletContext().getContextPath() + "/login");
@@ -67,6 +67,12 @@ public class AdminServlet extends HttpServlet {
                         req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
                     } else
                         resp.sendRedirect(getServletContext().getContextPath() + "/admin?action=add&incorrect=true");
+                }
+                if (action.equals("delete")) {
+                    Employee employee = new Employee();
+                    employee.setId(Integer.parseInt(req.getParameter("id")));
+                    employee.setEmail(req.getParameter("email"));
+                    DBUtil.deleteEmployee(employee);
                 }
             } else resp.sendRedirect(getServletContext().getContextPath() + "/login");
         } catch (NullPointerException e) {

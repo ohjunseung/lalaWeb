@@ -105,6 +105,17 @@ public class DBUtil {
         return tmp;
     }
 
+    private static void deleteUser(String email) {
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM user WHERE Email = ?")
+        ) {
+            ps.setString(1,email);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void editUser(User oldUser, User newUser) {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement("UPDATE user SET Email = ?, Pass = ? " +
@@ -186,6 +197,17 @@ public class DBUtil {
             ps.setString(2, job.getName());
             ps.setDouble(3, job.getSalary());
             ps.setString(4, jobCode);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteJob(String jobCode) {
+        try (Connection conn = ds.getConnection();
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM jobs WHERE Job_code = ?")
+        ) {
+            ps.setString(1,jobCode);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -286,6 +308,18 @@ public class DBUtil {
             ps.setString(2, employee.getJobCode());
             ps.setInt(3, employee.getId());
             ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteEmployee(Employee employee) {
+        try (Connection conn = ds.getConnection();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM employee WHERE ID = ?")
+        ) {
+            ps.setInt(1, employee.getId());
+            ps.executeUpdate();
+            deleteUser(employee.getEmail());
         } catch (SQLException e) {
             e.printStackTrace();
         }
